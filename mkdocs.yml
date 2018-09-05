@@ -5,7 +5,9 @@ site_author: 'Steven Bambling'
 site_url: 'http://kb.techtaco.org'
 nav:
   - Home: index.md
-  - 'Tips & Tricks': useful_commands.md
+  - 'Tips & Tricks':
+      - Useful Commands: useful_commands.md
+  - Linux: linux.md
   - Disclaimer: disclaimer.md
 
 # Repository

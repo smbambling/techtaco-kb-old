@@ -1,7 +1,16 @@
 # mkdocs
 site/
 
+# old
+oldkb
+
 # virtualenv
 .venv/
 venv/
 ENV/
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
