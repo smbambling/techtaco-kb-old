@@ -1,5 +1,5 @@
 # mkdocs
-/kb/site/
+site/
 
 # virtualenv
 .venv/

@@ -22,7 +22,7 @@ theme:
   logo: 'images/techtaco.png'
   favicon: 'assets/images/favicon.ico'
   palette:
-    primary: 'light blue'
+    primary: 'green'
     accent: 'red'
   font:
     text: 'Roboto'
