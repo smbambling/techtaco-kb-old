@@ -1,0 +1,7 @@
+# mkdocs
+/kb/site/
+
+# virtualenv
+.venv/
+venv/
+ENV/

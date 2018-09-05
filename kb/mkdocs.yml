@@ -1,0 +1,63 @@
+# Project Information
+site_name: Knowledge Base
+site_description: 'TechTaco Knowledge Base'
+site_author: 'Steven Bambling'
+site_url: 'http://kb.techtaco.org'
+nav:
+  - Home: index.md
+  - 'Tips & Tricks': useful_commands.md
+  - Disclaimer: disclaimer.md
+
+# Repository
+repo_name: 'techtaco-kb'
+repo_url: 'https://github.com/smbambling/techtaco-kb'
+
+# Copyright
+copyright: 'Copyright &copy; 2018 - 2019 Steven Bambling'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  logo: 'images/techtaco.png'
+  favicon: 'assets/images/favicon.ico'
+  palette:
+    primary: 'light blue'
+    accent: 'red'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  feature:
+    tabs: false
+
+# Customization
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/smbambling'
+  disqus: 'techtacoorg'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
