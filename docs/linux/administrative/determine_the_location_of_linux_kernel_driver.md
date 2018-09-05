@@ -1,6 +1,6 @@
 # Determine The Location of Linux Kernel Driver
 
-!!! note ""
+!!! note
     **/lib/modules/kernel-version/** directory stores all compiled drivers under Linux operating system.
 
 Display current modules
