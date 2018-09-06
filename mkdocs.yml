@@ -37,7 +37,7 @@ extra:
   social:
     - type: 'github'
       link: 'https://github.com/smbambling'
-  disqus: 'techtacoorg'
+  # disqus: 'techtacoorg'
 
 # Extensions
 markdown_extensions:
