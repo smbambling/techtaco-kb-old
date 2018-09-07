@@ -10,3 +10,5 @@ Command Example:
 ```bash 
 dd if=/dev/cdrom of=/cdrom_image.iso
 ```
+
+[gimmick:Disqus](techtacoorg)

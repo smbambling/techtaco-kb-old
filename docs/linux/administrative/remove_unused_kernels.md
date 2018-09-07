@@ -50,3 +50,4 @@ You can also run this in a loop with a little escaping
 for i in HOST1 HOST2; REMOVE=`ssh $i rpm -qa kernel\* | grep -v \`uname -r\`\|headers\|firmware` ; ssh $i yum -y remove $REMOVE ; ssh $i yum -y update ; done
 ```
 
+[gimmick:Disqus](techtacoorg)

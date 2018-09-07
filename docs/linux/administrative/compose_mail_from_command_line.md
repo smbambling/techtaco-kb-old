@@ -18,3 +18,4 @@ This is a test
 Cc: 
 ```
 
+[gimmick:Disqus](techtacoorg)
