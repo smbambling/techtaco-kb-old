@@ -1,12 +1,21 @@
-  * [Administrative](linux/administrative/administrative.md)
-  * [Apache](linux/apache/apache.md)
-  * [Bind](linux/bind.md)
-  * [Ftp](linux/ftp.md)
-  * [Ldap](linux/ldap.md)
-  * [Clustering](linux/clustering/clustering.md)
-  * [Puppet](linux/puppet/puppet.md)
-  * [Networking](linux/networking/networking.md)
-  * [PostgreSQL](linux/postgresql/postgresql.md)
-  * [GIT](linux/git/git.md)
-  * [Monitoring](linux/monitoring/monitoring.md)
-  * [PKI Certificates](linux/pki_certificates/pki_certificates.md)
+<table style="white-space: nowrap;">
+  <thead>
+    <tr>
+      <th colspan="4">Linux Topics</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="linux/administrative/nav.md">Administrative</a></td>
+      <td><a href="linux/apache/nav.md">Apache</a></td>
+      <td><a href="linux/clustering/nav.md">Clustering</a></td>
+      <td><a href="linux/puppet/nav.md">Puppet</a></td>
+    </tr>
+    <tr>
+      <td><a href="linux/git/nav.md">GIT</a></td>
+      <td><a href="linux/monitoring/nav.md">Monitoring</a></td>
+      <td><a href="linux/pki_certificates/nav.md">PKI Certificates</a></td>
+      <td><a href="linux/postgresql/nav.md">PostgreSQL</a></td>
+    </tr>
+  </tbody>
+</table>
