@@ -358,12 +358,6 @@
       
       
       
-        <li class="md-nav__item">
-          <a href="#__comments" title="Comments" class="md-nav__link md-nav__link--active">
-            Comments
-          </a>
-        </li>
-      
     </ul>
   
 </nav>
@@ -410,6 +404,8 @@ At least 10MB more space needed on the /boot filesystem.
 <p>You can also run this in a loop with a little escaping</p>
 <div class="codehilite"><pre><span></span><span class="k">for</span> i in HOST1 HOST2<span class="p">;</span> <span class="nv">REMOVE</span><span class="o">=</span><span class="sb">`</span>ssh <span class="nv">$i</span> rpm -qa kernel<span class="se">\*</span> <span class="p">|</span> grep -v <span class="se">\`</span>uname -r<span class="se">\`\|</span>headers<span class="se">\|</span>firmware<span class="sb">`</span> <span class="p">;</span> ssh <span class="nv">$i</span> yum -y remove <span class="nv">$REMOVE</span> <span class="p">;</span> ssh <span class="nv">$i</span> yum -y update <span class="p">;</span> <span class="k">done</span>
 </pre></div>
+
+<p><a href="techtacoorg">gimmick:Disqus</a></p>
                 
                   
                 
@@ -417,22 +413,6 @@ At least 10MB more space needed on the /boot filesystem.
               
                 
 
-
-  <h2 id="__comments">Comments</h2>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_config = function () {
-      this.page.url = "http://kb.techtaco.org/linux/administrative/remove_unused_kernels/";
-      this.page.identifier =
-        "/linux/administrative/remove_unused_kernels/";
-    };
-    (function() {
-      var d = document, s = d.createElement("script");
-      s.src = "//techtacoorg.disqus.com/embed.js";
-      s.setAttribute("data-timestamp", +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
 
               
             </article>

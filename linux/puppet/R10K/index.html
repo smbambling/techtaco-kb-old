@@ -1,0 +1,791 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="TechTaco Knowledge Base">
+      
+      
+        <link rel="canonical" href="http://kb.techtaco.org/linux/puppet/R10K/">
+      
+      
+        <meta name="author" content="Steven Bambling">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.3, mkdocs-material-3.0.4">
+    
+    
+      
+        <title>R10K - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="../../../#r10k" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-header-nav__button md-logo">
+          
+            <img src="../../../images/techtaco.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Knowledge Base
+              </span>
+              <span class="md-header-nav__topic">
+                R10K
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-nav__button md-logo">
+      
+        <img src="../../../images/techtaco.png" width="48" height="48">
+      
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Tips & Tricks
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Tips & Tricks
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../useful_commands/" title="Useful Commands" class="md-nav__link">
+      Useful Commands
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Linux" class="md-nav__link">
+      Linux
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../disclaimer/" title="Disclaimer" class="md-nav__link">
+      Disclaimer
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-r10k" title="What is R10K ?" class="md-nav__link">
+    What is R10K ?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description" title="Description" class="md-nav__link">
+    Description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#synopsis" title="Synopsis" class="md-nav__link">
+    Synopsis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#so-why-is-it-called-r10k" title="So why is it called R10k ?" class="md-nav__link">
+    So why is it called R10k ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-and-configuration" title="Installation and Configuration" class="md-nav__link">
+    Installation and Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#puppetfile" title="Puppetfile" class="md-nav__link">
+    Puppetfile
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-settings" title="Global Settings" class="md-nav__link">
+    Global Settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-patterns" title="Common Patterns" class="md-nav__link">
+    Common Patterns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-commands" title="Common Commands" class="md-nav__link">
+    Common Commands
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-environments" title="Dynamic Environments" class="md-nav__link">
+    Dynamic Environments
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" title="How it works" class="md-nav__link">
+    How it works
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow" title="Workflow" class="md-nav__link">
+    Workflow
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-new-modules" title="Adding New Modules" class="md-nav__link">
+    Adding New Modules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editing-existing-modules" title="Editing Existing Modules" class="md-nav__link">
+    Editing Existing Modules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-receive-hooks" title="Post Receive Hooks" class="md-nav__link">
+    Post Receive Hooks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" title="References" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/smbambling/techtaco-kb/edit/master/docs/linux/puppet/R10K.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="r10k">R10K<a class="headerlink" href="#r10k" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-r10k">What is R10K ?<a class="headerlink" href="#what-is-r10k" title="Permanent link">&para;</a></h2>
+<h4 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h4>
+<p>R10k provides a general purpose toolset for deploying Puppet environments and modules. It implements the <a href="https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd">Puppetfile</a> format and provides a native implementation of Puppet dynamic <a href="https://docs.puppetlabs.com/puppet/latest/reference/environments.html">environments</a>.</p>
+<h4 id="synopsis">Synopsis<a class="headerlink" href="#synopsis" title="Permanent link">&para;</a></h4>
+<p>Fundamentally, R10k installs a set of modules into a speicifed module directory and verifies their freshnes</p>
+<h4 id="so-why-is-it-called-r10k">So why is it called R10k ?<a class="headerlink" href="#so-why-is-it-called-r10k" title="Permanent link">&para;</a></h4>
+<p>In true fasion the Puppet guys are terible at names.  While Adrien aka finch was attempting to come up with a clever name, he recalled that Randall Munroe wrote a bot for controlling IRC chatter, and gave it the most generic name he could think of - Robot 9000. Since Adrien just needed a name, any name,he decided to go with an equally generic name by incrementing the robot index.</p>
+<h2 id="installation-and-configuration">Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permanent link">&para;</a></h2>
+<p>The easiest way to manually install R10k is via ruby gems</p>
+<div class="codehilite"><pre><span></span>gem install r10k
+</pre></div>
+
+<p>Configure r10k by editing /etc/r10k.yaml and ensuring it has the following contents:</p>
+<div class="codehilite"><pre><span></span>:cachedir: /var/cache/r10k
+:sources:
+  puppet:
+    basedir: /etc/puppet/environments
+    prefix: false
+    remote: https://github.com/repo.git
+
+:purgedirs:
+  - /etc/puppet/environments
+</pre></div>
+
+<p>Another common solution for installation is via the <a href="https://github.com/acidprime/r10k">R10K Puppet module</a>. This will install the R10k Ruby gem as well as configure the <strong>/etc/r10k.yaml</strong> file</p>
+<p>Example Installation:</p>
+<div class="codehilite"><pre><span></span>class { &#39;r10k&#39;:
+    version           =&gt; &#39;1.4.1&#39;,
+    sources           =&gt; {
+      &#39;puppet&#39; =&gt; {
+        &#39;remote&#39;  =&gt; &#39;PATH_TO_REPO&#39;,
+        &#39;basedir&#39; =&gt; &quot;${::settings::confdir}/environments&quot;,
+        &#39;prefix&#39;  =&gt; false,
+      },
+    },
+    purgedirs         =&gt; [&quot;${::settings::confdir}/environments&quot;],
+    manage_modulepath =&gt; false,
+  }
+</pre></div>
+
+<h2 id="puppetfile">Puppetfile<a class="headerlink" href="#puppetfile" title="Permanent link">&para;</a></h2>
+<p>Puppetfiles are a simple Ruby based DSL that specifies a list of modules to install, what version to install, and where to fetch them from.</p>
+<p>R10k uses a <a href="https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd">Puppetfile</a> to install a set of Puppet modules for local development, or environment deployments to install additional modules into a given environment.</p>
+<blockquote>
+<p>Unlike librarian-puppet, the r10k implementation of Puppetfiles does not include dependency resolution, but it is on the roadmap.</p>
+</blockquote>
+<h4 id="global-settings">Global Settings<a class="headerlink" href="#global-settings" title="Permanent link">&para;</a></h4>
+<p>The <code>forge</code> setting specifies which server that Forge based modules are fetched from.</p>
+<div class="codehilite"><pre><span></span>forge &quot;https://forge.puppetlabs.com&quot;
+</pre></div>
+
+<p>The <code>moduledir</code> setting specifies where modules from the Puppetfile will be installed. This <strong>defaults</strong> to the modules directory relative to the Puppetfile. If the path is absolute then the modules will be installed to that absolute path, otherwise it's assumed that the moduledir setting should be relative and the modules will be installed in that directory relative to the Puppetfile.</p>
+<h4 id="common-patterns">Common Patterns<a class="headerlink" href="#common-patterns" title="Permanent link">&para;</a></h4>
+<p><strong>GIT</strong></p>
+<div class="codehilite"><pre><span></span>mod &#39;puppetlabs-apache&#39;,
+  :git =&gt; &#39;https://github.com/puppetlabs/puppetlabs-apache.git&#39;
+</pre></div>
+
+<p><strong>SVN</strong></p>
+<div class="codehilite"><pre><span></span>mod &#39;apache&#39;,
+  :svn =&gt; &#39;https://github.com/puppetlabs/puppetlabs-apache/trunk&#39;
+</pre></div>
+
+<p><strong>FORGE</strong></p>
+<div class="codehilite"><pre><span></span>mod &#39;puppetlabs/apache&#39;
+</pre></div>
+
+<h2 id="common-commands">Common Commands<a class="headerlink" href="#common-commands" title="Permanent link">&para;</a></h2>
+<p>Install or update all modules in a given Puppetfile into ./modules)</p>
+<div class="codehilite"><pre><span></span>r10k puppetfile install
+</pre></div>
+
+<p>Verify the Puppetfile syntax</p>
+<div class="codehilite"><pre><span></span>r10k puppetfile check
+</pre></div>
+
+<p>Remove any modules in the 'modules' directory that are not specified in the Puppetfile:</p>
+<div class="codehilite"><pre><span></span>r10k puppetfile purge
+</pre></div>
+
+<h2 id="dynamic-environments">Dynamic Environments<a class="headerlink" href="#dynamic-environments" title="Permanent link">&para;</a></h2>
+<p>One of the most important functions of r10k is its ability to dynamically manage your Puppet environments.</p>
+<p>The core idea of dynamic environments is that you should be able to manage your Puppet modules in the same manner that you would manage any other code base.  This builds on top of the GIT <a href="http://git-scm.com/book/en/Git-Branching-Branching-Workflows#Topic-Branches">topic/feature</a> branch model</p>
+<p>Whenever changes need to be made that need to be reviewed or tested before going live, they should be done in a different, short lived branch called a topic/feature branch. Work can be freely done on a topic branch in isolation and when the work is completed it is merged into a "master" or "production" branch.</p>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<p>R10k works by tracking the state of your Git repository or repositories. Each repository's branches will be cloned into a directory with a matching name, creating a Puppet environment for the branch. </p>
+<p>If a repository includes a Puppetfile such as a <strong>control repository</strong>. Forge modules and Git/SVN repositories described within will be cloned as well into the same directory. Subsequent changes to the branches will be kept in sync on the filesystem by future r10k runs. </p>
+<p>Finally, if there are directories that do not match existing branches, r10k will assume that the branches for those environments were delete and will remove those environments.</p>
+<blockquote>
+<p>r10k will need to be be able to authenticate with each repository. Most Git systems support authentication with SSH keys. GitHub calls them deploy keys. Bitbucket calls them deployment keys. Stash calls them SSH access keys.</p>
+</blockquote>
+<h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
+<h4 id="adding-new-modules">Adding New Modules<a class="headerlink" href="#adding-new-modules" title="Permanent link">&para;</a></h4>
+<p>This workflow is used when adding new modules via the forge or a VCS source such as git.  These can be either public or internally-developed</p>
+<ol>
+<li>Create a topic/feature branch in the repository in which your Puppetfile resides.  This is usually the <strong>control repository</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span>git checkout -b feature_branch
+</pre></div>
+
+<ol>
+<li>Update the Puppetfile to include a section declaring the new module</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>mod &quot;user-custom_facts&quot;,
+  :git =&gt; &quot;git://github.com/user/custom_facts&quot;
+</pre></div>
+1. Commit your changes and push the Puppetfile topic/feature branch upstream</p>
+<p><div class="codehilite"><pre><span></span>git commit -a -m ‘Add module user/module to branch feature_branch&#39;
+git push origin feature_branch
+</pre></div>
+1. Reference the new module in manifest, module and/or hiera</p>
+<blockquote>
+<p>If you are simply adding the module at this time and not referencing it in other modules or manifests, you may skip these step(s).
+  1. Create topic/feature branch for the manifest, module or hiera data that you are modifying.</p>
+</blockquote>
+<div class="codehilite"><pre><span></span>  ```
+  git checkout -b feature_branch
+  ```
+</pre></div>
+
+
+<ol>
+<li>
+<p>Modify the exisiting manifest, module or hiera data and commit your changes and push the topic/feature branch upstream</p>
+<p><div class="codehilite"><pre><span></span>git commit -a -m ‘Add feature reference to module’
+git push origin feature_branch
+</pre></div>
+1. Deploy <strong>feature_branch</strong> Puppet Environment</p>
+<blockquote>
+<p>Can be a hook to automatically deploy environments</p>
+</blockquote>
+</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>r10k deploy environment -p 
+</pre></div>
+1. Testing New Module Branches</p>
+<blockquote>
+<p>If you are simply adding the module at this time and not referencing it in other modules or manifests, you may skip this step.</p>
+</blockquote>
+<p>There are many methods for testing a cheap/easy for testing is to specify the environment and noop flags</p>
+<p><div class="codehilite"><pre><span></span>puppet agent -t --environment feature_branch --noop
+</pre></div>
+  Verify the changes are successful, match your expected changes and you are satisfied by the results</p>
+<ol>
+<li>Merge your changes for the repository in which your Puppetfile resides ( Control Repository ) into the master/production branch.</li>
+</ol>
+<div class="codehilite"><pre><span></span>git checkout production
+git merge feature_branch
+git push origin production
+</pre></div>
+
+<ol>
+<li>Merge your changes for the manifest, module and/or hiera repositories referencing the new module.<blockquote>
+<p>If you are simply adding the module at this time and not referencing it in other modules or manifests, you may skip this step.</p>
+</blockquote>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span>git checkout production
+git merge feature_branch
+git push origin production
+</pre></div>
+
+<ol>
+<li>Cleanup topic/feature branches<blockquote>
+<p>You may skip this step for long-lived branches, however most feature branches should be short-lived and can be pruned once testing and merging is complete.</p>
+</blockquote>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span>git branch -D feature_branch
+git push origin :feature_branch
+</pre></div>
+
+<h4 id="editing-existing-modules">Editing Existing Modules<a class="headerlink" href="#editing-existing-modules" title="Permanent link">&para;</a></h4>
+<p>This workflow is used when updating existing modules.</p>
+<ol>
+<li>Create topic/feature branch for the manifest, module or hiera data that you are modifying.</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>git checkout -b feature_branch
+</pre></div>
+1. Modify the exisiting manifest, module or hiera data, commit your changes and push the topic/feature branch upstream</p>
+<div class="codehilite"><pre><span></span>git commit -a -m ‘Add feature reference to module’
+git push origin feature_branch
+</pre></div>
+
+<ol>
+<li>Update the Puppetfile repository to to reference new branch of the updated module</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>mod &quot;user-custom_facts&quot;,
+    :git =&gt; &quot;git://github.com/user/custom_facts&quot;
+    :ref =&gt; &quot;feature_branch&quot;
+</pre></div>
+1. Commit your changes and push the Puppetfile topic/feature branch upstream</p>
+<div class="codehilite"><pre><span></span>git commit -a -m ‘updating module user/module to branch feature_branch&#39;
+git push origin feature_branch
+</pre></div>
+
+<ol>
+<li>Deploy <strong>feature_branch</strong> Puppet Environment</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>r10k deploy environment -p 
+</pre></div>
+1. Test New Module Branches</p>
+<p>There are many methods for testing a cheap/easy for testing is to specify the environment and noop flags</p>
+<div class="codehilite"><pre><span></span>puppet agent -t --environment feature_branch --noop
+</pre></div>
+
+<p>Verify the changes are successful, match your expected changes and you are satisfied by the results</p>
+<ol>
+<li>Merge your changes for the manifest, module and/or hiera repositories for the updated module(s).</li>
+</ol>
+<p><div class="codehilite"><pre><span></span>git checkout production
+git merge feature_branch
+git push origin production
+</pre></div>
+1. Merge your changes for the repository in which your Puppetfile resides ( Control Repository ) into the master/production branch.</p>
+<p><div class="codehilite"><pre><span></span>git checkout production
+git merge feature_branch
+git push origin production
+</pre></div>
+1. Cleanup topic/feature branches</p>
+<blockquote>
+<p>You may skip this step for long-lived branches, however most feature branches should be short-lived and can be pruned once testing and merging is complete.</p>
+</blockquote>
+<div class="codehilite"><pre><span></span>git branch -D feature_branch
+git push origin :feature_branch
+</pre></div>
+
+<p>This is a vanilla workflow. You may need or desire to customize the workflow to fit the needs of your team, tools and methodolgy used.</p>
+<h4 id="post-receive-hooks">Post Receive Hooks<a class="headerlink" href="#post-receive-hooks" title="Permanent link">&para;</a></h4>
+<p>SVN and GIT post-receive hooks can but used to help streamline your R10k workflow.  Providing you with the ability to quickly and painlessly create Puppet environments to verify and test your code changes.</p>
+<p>The <a href="https://github.com/acidprime/r10k">Puppet r10k</a> module by Zack Smith details the integration support for MCollective and R10k in combination with a custom webhook that provides GitHub support.</p>
+<p>Another popular post-receive hook is <a href="https://github.com/pzim/reaktor">reaktor</a>.  </p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/puppetlabs/r10k">Puppetlabs Github R10k</a></p>
+<p><a href="http://garylarizza.com/blog/2014/08/31/r10k-plus-directory-environments/">Sh*t Gary Says: R10k + Directory Environments</a></p>
+<p><a href="https://docs.puppetlabs.com/puppet/latest/reference/environments.html">Puppetlabs Directory Environments</a></p>
+<p><a href="http://terrarum.net/blog/puppet-infrastructure-with-r10k.html">terrarum: Puppet Infrastructure with r10k</a></p>
+<p><a href="http://somethingsinistral.net/blog/rethinking-puppet-deployment/">somthingsinisetal: Rethinking Puppet Deployment</a></p>
+<p><a href="http://www.jeffmalnick.com/blog/2014/05/16/r10k-control-repos/">R10k Control Repos</a></p>
+<p><a href="https://github.com/pzim/reaktor">Reaktor: post-receive hook</a></p>
+<p><a href="https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd">R10k Puppetfile</a></p>
+<p><a href="https://github.com/puppetlabs/r10k/blob/master/doc/dynamic-environments/workflow-guide.mkd">R10k: Workflow Guide</a></p>
+<p><a href="http://webcache.googleusercontent.com/search?q=cache:-FkbO79nhqEJ:www.geoffwilliams.me.uk/r10k_mco_publisher+&amp;cd=6&amp;hl=en&amp;ct=clnk&amp;gl=us&amp;client=safari">http://webcache.googleusercontent.com/search?q=cache:-FkbO79nhqEJ:www.geoffwilliams.me.uk/r10k_mco_publisher+&amp;cd=6&amp;hl=en&amp;ct=clnk&amp;gl=us&amp;client=safari</a></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2018 - 2019 Steven Bambling
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/smbambling" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.3",url:{base:"../../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

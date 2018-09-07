@@ -344,16 +344,14 @@
                 
                 
                 <h1 id="determine-the-location-of-linux-kernel-driver">Determine The Location of Linux Kernel Driver<a class="headerlink" href="#determine-the-location-of-linux-kernel-driver" title="Permanent link">&para;</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>/lib/modules/kernel-version/</strong> directory stores all compiled drivers under Linux operating system.</p>
-</div>
+<p>Note! <strong>/lib/modules/kernel-version/</strong> directory stores all compiled drivers under Linux operating system.</p>
 <p>Display current modules
 <div class="codehilite"><pre><span></span>ls -l /lib/modules/<span class="k">$(</span>uname -r<span class="k">)</span>
 </pre></div></p>
 <p>Navigate to current modules directory
 <div class="codehilite"><pre><span></span><span class="nb">cd</span> /lib/modules/<span class="k">$(</span>uname -r<span class="k">)</span>
 </pre></div></p>
+<p><a href="techtacoorg">gimmick:Disqus</a></p>
                 
                   
                 
@@ -361,22 +359,6 @@
               
                 
 
-
-  <h2 id="__comments">Comments</h2>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_config = function () {
-      this.page.url = "http://kb.techtaco.org/linux/administrative/determine_the_location_of_linux_kernel_driver/";
-      this.page.identifier =
-        "/linux/administrative/determine_the_location_of_linux_kernel_driver/";
-    };
-    (function() {
-      var d = document, s = d.createElement("script");
-      s.src = "//techtacoorg.disqus.com/embed.js";
-      s.setAttribute("data-timestamp", +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
 
               
             </article>

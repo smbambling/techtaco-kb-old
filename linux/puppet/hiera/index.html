@@ -1,0 +1,707 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="TechTaco Knowledge Base">
+      
+      
+        <link rel="canonical" href="http://kb.techtaco.org/linux/puppet/hiera/">
+      
+      
+        <meta name="author" content="Steven Bambling">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.3, mkdocs-material-3.0.4">
+    
+    
+      
+        <title>Hiera - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="../../../#overview" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-header-nav__button md-logo">
+          
+            <img src="../../../images/techtaco.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Knowledge Base
+              </span>
+              <span class="md-header-nav__topic">
+                Hiera
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-nav__button md-logo">
+      
+        <img src="../../../images/techtaco.png" width="48" height="48">
+      
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Tips & Tricks
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Tips & Tricks
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../useful_commands/" title="Useful Commands" class="md-nav__link">
+      Useful Commands
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Linux" class="md-nav__link">
+      Linux
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../disclaimer/" title="Disclaimer" class="md-nav__link">
+      Disclaimer
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" title="Overview" class="md-nav__link">
+    Overview
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-hiera" title="What is Hiera ?" class="md-nav__link">
+    What is Hiera ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-hiera" title="Why Hiera ?" class="md-nav__link">
+    Why Hiera ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-goes-into-hiera" title="What goes into Hiera ?" class="md-nav__link">
+    What goes into Hiera ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-dosnt-go-into-hiera" title="What DOSN'T go into Hiera ?" class="md-nav__link">
+    What DOSN'T go into Hiera ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hierarchical-structure" title="Hierarchical Structure" class="md-nav__link">
+    Hierarchical Structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-hierarchy" title="Creating Hierarchy" class="md-nav__link">
+    Creating Hierarchy
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" title="Best Practices" class="md-nav__link">
+    Best Practices
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" title="Configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" title="Format" class="md-nav__link">
+    Format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-sources" title="Data Source(s)" class="md-nav__link">
+    Data Source(s)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lookups" title="Lookups" class="md-nav__link">
+    Lookups
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-hiera-hiera95array-and-hiera95hash-lookup-funcitons" title="When to use hiera, hiera_array and hiera_hash lookup funcitons ?" class="md-nav__link">
+    When to use hiera, hiera_array and hiera_hash lookup funcitons ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-environments" title="Dynamic Environments" class="md-nav__link">
+    Dynamic Environments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminology" title="Terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" title="References" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/smbambling/techtaco-kb/edit/master/docs/linux/puppet/hiera.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Hiera</h1>
+                
+                <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h4 id="what-is-hiera">What is Hiera ?<a class="headerlink" href="#what-is-hiera" title="Permanent link">&para;</a></h4>
+<p>Hiera is a ordered hierarchical key/value data store/lookup tool for configuration data</p>
+<p><strong>Hierarchical Data Store</strong>: an organizational structure in which items are ranked according to levels of importance</p>
+<h4 id="why-hiera">Why Hiera ?<a class="headerlink" href="#why-hiera" title="Permanent link">&para;</a></h4>
+<p>Hiera makes Puppet better by keeping <strong>site-specific data out of your manifests</strong></p>
+<p>Benefits:</p>
+<ul>
+<li>
+<p>Easier to configure your own nodes: default data with multiple levels of overrides is finally easy.</p>
+</li>
+<li>
+<p>Easier to re-use public Puppet modules: don’t edit the code, just put the necessary data in Hiera.</p>
+</li>
+<li>
+<p>Easier to publish your own modules for collaboration: no need to worry about cleaning out your data before showing it around, and no more clashing variable names.</p>
+</li>
+</ul>
+<h4 id="what-goes-into-hiera">What goes into Hiera ?<a class="headerlink" href="#what-goes-into-hiera" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Business-specific data (i.e. internal NTP server, VIP address, per-environment java application versions, etc…)</li>
+<li>Data that you don’t want to include in your component modules</li>
+</ul>
+<h4 id="what-dosnt-go-into-hiera">What DOSN'T go into Hiera ?<a class="headerlink" href="#what-dosnt-go-into-hiera" title="Permanent link">&para;</a></h4>
+<ul>
+<li>OS-specific data</li>
+<li>Data common to the component modules everyone needs to know (paths to config files, package names, etc…)</li>
+<li>Sensitive data ( Password, Keys ) - <strong>Unless your using eyaml/eyaml-gpg</strong></li>
+</ul>
+<h2 id="hierarchical-structure">Hierarchical Structure<a class="headerlink" href="#hierarchical-structure" title="Permanent link">&para;</a></h2>
+<p>The hierarchial structure is <strong>NOT</strong> definded and can be configured to meet <strong>your</strong> specific needs.  Thus hiera does not have any requirements for the hierarchial structure.</p>
+<p>An example strucuture uses <strong>nodes</strong>, <strong>locations</strong>, secruity zones(<strong>seczones</strong>), environment tiers(<strong>envtiers</strong>) and <strong>common</strong> as the structure.</p>
+<p><img alt="hiera_public" src="../attachments/hiera_sample.png" /></p>
+<p>This sample structure provides the granular ability to set/configure <strong>site-specific</strong> data at multiple layers</p>
+<p><strong>Nodes(FQDN)</strong>: Node specific data</p>
+<p><strong>Locations</strong>: Data specific to a site or location. Such as different data centers</p>
+<p><strong>Security Zones(seczones)</strong>: Data specific to security zones, such as dmz vs core (<strong>protected</strong>).</p>
+<p><strong>Environment Teirs</strong>: Data specific to environment tiers such as production, stage, dev, qa...etc.</p>
+<p><strong>Common</strong>: "Global" data that is common among <strong>ALL</strong> nodes.  This is used as a last match catagory.</p>
+<h2 id="creating-hierarchy">Creating Hierarchy<a class="headerlink" href="#creating-hierarchy" title="Permanent link">&para;</a></h2>
+<p>The hierarchical structure contains two types of elements its <a href="https://docs.puppetlabs.com/hiera/1/data_sources.html">data sources</a>:</p>
+<ul>
+<li>
+<p><strong>Static data source</strong> — A hierarchy element without any <a href="https://docs.puppetlabs.com/hiera/1/variables.html">interpolation tokens</a>. A static data source will be the same for every node.</p>
+</li>
+<li>
+<p><strong>Dynamic data source</strong> — A hierarchy element with at least one <a href="https://docs.puppetlabs.com/hiera/1/variables.html">interpolation tokens</a>. If two nodes have different values for the variables it references, a dynamic data source will use two different data sources for those nodes.</p>
+</li>
+</ul>
+<p>Hiera’s variables can come from a variety of sources, depending on how Hiera is invoked.  When used in combination with Puppet, Hiera automatically recieves all of Puppet’s current <a href="https://docs.puppetlabs.com/puppet/latest/reference/lang_variables.html">variables</a></p>
+<p>This includes <a href="https://docs.puppetlabs.com/puppet/latest/reference/lang_variables.html#facts-and-built-in-variables">facts and built-in variables</a>, as well as local variables from the current scope. Most users will almost exclusively interpolate facts and built-in variables in their Hiera configuration and data.</p>
+<p>To ultilize facts and built-in variables, remove Puppet’s <strong>$</strong> (dollar sign) prefix when using its variables in Hiera. (That is, a variable called $::clientcert in Puppet is called ::clientcert in Hiera.)</p>
+<h4 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>Usually avoid referencing user-set local variables from Hiera. Instead, use facts, built-in variables, top-scope variables, node-scope variables, or variables from an ENC whenever possible.</p>
+</li>
+<li>
+<p>When possible, reference variables by their fully-qualified names (e.g. %{::environment} and %{::clientcert}) to make sure their values are not masked by local scopes.</p>
+</li>
+</ul>
+<blockquote>
+<p>These two guidelines will make Hiera more predictable, and can help protect you from accidentally mingling data and code in your Puppet manifests.</p>
+</blockquote>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Hiera’s config file is usually referred to as hiera.yaml. Use this file to configure the hierarchy, which backend(s) to use, and settings for each backend.</p>
+<p>Used in combination with Puppet the default config file location is $confdir/hiera.yaml, which is usually one of the following:</p>
+<ul>
+<li>/etc/puppet/hiera.yaml in *nix open source Puppet</li>
+<li>/etc/puppetlabs/puppet/hiera.yaml in *nix Puppet Enterprise</li>
+<li>COMMON_APPDATA\PuppetLabs\puppet\etc\hiera.yaml on Windows</li>
+</ul>
+<h4 id="format">Format<a class="headerlink" href="#format" title="Permanent link">&para;</a></h4>
+<p>Hiera’s config file must be a YAML hash. The file must be valid YAML, but may contain no data.</p>
+<p>Each top-level key in the hash must be a Ruby symbol with a colon (:) prefix. </p>
+<p>Available settings are listed at “<a href="https://docs.puppetlabs.com/hiera/1/configuring.html#global-settings">Global Settings</a>” and “<a href="https://docs.puppetlabs.com/hiera/1/configuring.html#backend-specific-settings">Backend-Specific Settings</a>”.</p>
+<div class="codehilite"><pre><span></span>---
+:backends:
+  - yaml
+:logger: console
+:hierarchy:
+  - &quot;nodes/%{::clientcert}&quot;
+  - &quot;locations/%{::location}&quot;
+  - &quot;seczones/%{::seczone}&quot;
+  - &quot;envtiers/%{::envtier}&quot;
+  - common
+</pre></div>
+
+<h2 id="data-sources">Data Source(s)<a class="headerlink" href="#data-sources" title="Permanent link">&para;</a></h2>
+<p>Within a data source, you can interpolate values into any string, whether it’s a standalone value or part of a hash or array value. This can be useful for values that should be different for every node, but which differ <strong>predictably</strong>:</p>
+<div class="codehilite"><pre><span></span># /var/lib/hiera/common.yaml
+---
+ntpserver: &quot;ntp.%{::domain}&quot;
+</pre></div>
+
+<p>As well as basic values data source can contain hashes of data that can be looked up via the <a href="https://docs.puppetlabs.com/references/latest/function.html#hierahash">hiera_hash</a> function</p>
+<p><strong>Hiera_Hash Lookup Function</strong></p>
+<p><div class="codehilite"><pre><span></span>$myvhosts = hiera_hash(&#39;apache::vhosts&#39;, {})
+create_resources(&#39;apache::vhost&#39;, $myvhosts)
+</pre></div>
+<strong>Data Source Hash</strong></p>
+<div class="codehilite"><pre><span></span>apache::vhosts:
+  &quot;%{::fqdn}&quot;:
+    port: &#39;80&#39;
+    docroot: &#39;/var/www/html&#39;
+    priority: &#39;25&#39;
+    default_vhost: true
+    directories:
+      -
+        path: &#39;/var/www/html&#39;
+        allow:
+          - &#39;from 127.0.0.1&#39;
+          - &#39;from ::1&#39;
+        options:
+          - &#39;Indexes&#39;
+          - &#39;FollowSymLinks&#39;
+          - &#39;MultiViews&#39;
+  &quot;%{::fqdn}-ssl&quot;:
+    port: &#39;443&#39;
+    docroot: &#39;/var/www/html&#39;
+    priority: &#39;25&#39;
+    ssl: true
+    ssl_cert: &quot;/etc/pki/tls/certs/%{::fqdn}-server.crt&quot;
+    ssl_key: &quot;/etc/pki/tls/private/%{::fqdn}-server.key&quot;
+    ssl_ca: &#39;/etc/pki/tls/certs/ca.crt&#39;
+    ssl_verify_client: &#39;require&#39;
+    ssl_verify_depth: &#39;3&#39;
+    ssl_proxyengine: true
+    proxy_pass:
+      -
+        path: &#39;/&#39;
+        url: &quot;https://foreman.%{::domain}/&quot;
+</pre></div>
+
+<h2 id="lookups">Lookups<a class="headerlink" href="#lookups" title="Permanent link">&para;</a></h2>
+<p>Hiera always takes a lookup key and returns a <strong>single value</strong> (of some simple or complex data type), but it has several methods for extracting/assembling that one value from the hierarchy. We refer to these as “lookup methods.”</p>
+<p>Hiera uses the <a href="https://docs.puppetlabs.com/hiera/1/lookup_types.html#priority-default">priority lookup method</a> as its default, which gets a value from the <strong>most specific</strong> (<strong>a.k.a first match wins</strong>) matching level of the hierarchy. Only one hierarchy level — the first one to match — is consulted</p>
+<p>Priority lookups can retrieve values of any data type (strings, arrays, hashes), but the entire value will come from <strong>only one</strong> hierarchy level.</p>
+<blockquote>
+<p>Consult the <a href="https://docs.puppetlabs.com/hiera/1/lookup_types.html">Puppetlabs Hiera Documentation</a> for details on additonal lookup methods.</p>
+</blockquote>
+<h4 id="when-to-use-hiera-hiera95array-and-hiera95hash-lookup-funcitons">When to use hiera, hiera_array and hiera_hash lookup funcitons ?<a class="headerlink" href="#when-to-use-hiera-hiera95array-and-hiera95hash-lookup-funcitons" title="Permanent link">&para;</a></h4>
+<p>The short answer is to use hiera whenever you expect to need a single lookup from a single part of your hierachy. If you need to merge value across the matching parts of your hierarchy, then you'll need hiera_hash or hiera_array</p>
+<p><a href="https://docs.puppetlabs.com/references/latest/function.html#hiera">hiera</a> - Performs a standard priority lookup and returns the most specific value for a given key. The returned value can be data of any type (strings, arrays, or hashes).</p>
+<p><a href="https://docs.puppetlabs.com/references/latest/function.html#hieraarray">hiera_array</a> - Returns all matches throughout the hierarchy — not just the first match — as a flattened array of unique values. If any of the matched values are arrays, they’re flattened and included in the results.</p>
+<p><a href="https://docs.puppetlabs.com/references/latest/function.html#hierahash">hiera_hash</a> - Returns a merged hash of matches from throughout the hierarchy. In cases where two or more hashes share keys, the hierarchy order determines which key/value pair will be used in the returned hash, with the pair in the highest priority data source winning.</p>
+<h2 id="dynamic-environments">Dynamic Environments<a class="headerlink" href="#dynamic-environments" title="Permanent link">&para;</a></h2>
+<p>On each puppet run the <code>$confdir/hiera.yaml</code>  is consulted, thus any configurations must be in this file.  Because of this you can <strong>NOT</strong> have hierarchies per environment. </p>
+<p>The <code>$datadir</code> is an environment aware namespace that is filled at run time, it can consult a specific environments datadir <code>$confdir/environments/$environment/hieradata/</code></p>
+<p>To configure Hiera for dynamic environments configure the <code>`datadir</code> property </p>
+<div class="codehilite"><pre><span></span>:datadir: /etc/puppet/environments/%{::environment}/hieradata
+</pre></div>
+
+<h2 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Permanent link">&para;</a></h2>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<p><a href="https://docs.puppetlabs.com/hiera/1/">PuppetLabs Hiera 1 Overview</a></p>
+<p><a href="https://docs.puppetlabs.com/hiera/1/lookup_types.html">Hiera Lookup Types</a></p>
+<p><a href="https://docs.puppetlabs.com/hiera/1/hierarchy.html">The hiera.yaml Config File</a></p>
+<p><a href="https://docs.puppetlabs.com/hiera/1/variables.html#in-data-sources">Hiera Data Sources</a></p>
+<p><a href="https://ask.puppetlabs.com/question/13592/when-to-use-hiera-hiera_array-and-hiera_hash/">When to use hiera, hiera_array, and hiera_hash?</a></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2018 - 2019 Steven Bambling
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/smbambling" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.3",url:{base:"../../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

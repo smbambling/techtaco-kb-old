@@ -1,0 +1,1733 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="TechTaco Knowledge Base">
+      
+      
+        <link rel="canonical" href="http://kb.techtaco.org/linux/postgresql/building_a_highly_available_multi-node_cluster_with_pacemaker_&_corosync/">
+      
+      
+        <meta name="author" content="Steven Bambling">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.3, mkdocs-material-3.0.4">
+    
+    
+      
+        <title>Building a highly available multi node cluster with pacemaker & corosync - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="../../../#overview" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-header-nav__button md-logo">
+          
+            <img src="../../../images/techtaco.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Knowledge Base
+              </span>
+              <span class="md-header-nav__topic">
+                Building a highly available multi node cluster with pacemaker & corosync
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://kb.techtaco.org" title="Knowledge Base" class="md-nav__button md-logo">
+      
+        <img src="../../../images/techtaco.png" width="48" height="48">
+      
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/smbambling/techtaco-kb/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      techtaco-kb
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Tips & Tricks
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Tips & Tricks
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../useful_commands/" title="Useful Commands" class="md-nav__link">
+      Useful Commands
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="Linux" class="md-nav__link">
+      Linux
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../disclaimer/" title="Disclaimer" class="md-nav__link">
+      Disclaimer
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" title="Overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure" title="Infrastructure" class="md-nav__link">
+    Infrastructure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vagrant-setup" title="Vagrant Setup" class="md-nav__link">
+    Vagrant Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ha-cluster-installation" title="HA Cluster Installation" class="md-nav__link">
+    HA Cluster Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-installation" title="Cluster Installation" class="md-nav__link">
+    Cluster Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-configuration" title="Cluster Configuration" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pacemaker-cluster-configuration" title="Pacemaker Cluster Configuration" class="md-nav__link">
+    Pacemaker Cluster Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pacemaker-postgresql-resource" title="Pacemaker PostgreSQL Resource" class="md-nav__link">
+    Pacemaker PostgreSQL Resource
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fencing-and-stonith" title="Fencing and STONITH" class="md-nav__link">
+    Fencing and STONITH
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-tools" title="Additional Tools" class="md-nav__link">
+    Additional Tools
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crm" title="CRM" class="md-nav__link">
+    CRM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crm_mon" title="CRM_MON" class="md-nav__link">
+    CRM_MON
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#node-failover" title="Node Failover" class="md-nav__link">
+    Node Failover
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fail-the-asynchronous-node-pgdb3" title="Fail the asynchronous node (pgdb3)" class="md-nav__link">
+    Fail the asynchronous node (pgdb3)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fail-the-synchronous-node-pgdb2" title="Fail the synchronous node (pgdb2)" class="md-nav__link">
+    Fail the synchronous node (pgdb2)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fail-the-master-node-pgdb1" title="Fail the 'Master' node (pgdb1)" class="md-nav__link">
+    Fail the 'Master' node (pgdb1)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potential-failover-scenarios" title="Potential Failover Scenarios" class="md-nav__link">
+    Potential Failover Scenarios
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-considerations" title="Production Considerations" class="md-nav__link">
+    Production Considerations
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-configuration" title="System Configuration" class="md-nav__link">
+    System Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration_1" title="Cluster Configuration" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-best-practices" title="PostgreSQL Best Practices" class="md-nav__link">
+    PostgreSQL Best Practices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring" title="Monitoring" class="md-nav__link">
+    Monitoring
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/smbambling/techtaco-kb/edit/master/docs/linux/postgresql/building_a_highly_available_multi-node_cluster_with_pacemaker_&_corosync.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Building a highly available multi node cluster with pacemaker & corosync</h1>
+                
+                <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Building a highly available multi-node PostgreSQL cluster, using freely available software including <a href="http://clusterlabs.org/">Pacemaker</a>, <a href="http://corosync.github.io/corosync/">Corsync</a>, <a href="http://www.sourceware.org/cluster/cman/">Cman</a> and <a href="http://www.postgresql.org/">PostgresSQL</a> on <a href="http://www.centos.org/">CentOS</a></p>
+<h2 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../attachments/pgdb-infra.png" /></p>
+<h2 id="vagrant-setup">Vagrant Setup<a class="headerlink" href="#vagrant-setup" title="Permanent link">&para;</a></h2>
+<p>In order to assist in following along with this tutorial, you can use the following <a href="attachments/Vagrantfile">Vagrantfile</a> to spool up a cluster environment using CentOS 6.6</p>
+<p>For those unfaimilar with please download and install the latest version from <a href="https://www.vagrantup.com/downloads">vagrantup</a>. </p>
+<p>Once installed create a root directory that will house files for this project.
+<div class="codehilite"><pre><span></span>mkdir pgdb_cluster
+</pre></div></p>
+<p>Navigate into the newly created root directory
+<div class="codehilite"><pre><span></span><span class="nb">cd</span> pgdb_cluster
+</pre></div></p>
+<p>Download the Vagrantfile noted above into your root directory
+<div class="codehilite"><pre><span></span>wget http://kb.techtaco.org/linux/postgresql/attachments/Vagrantfile
+</pre></div></p>
+<p>Now to create the three virtual machines needed for this development environment we simply run {varant up}. This will read the Vargrantfile located in the project root directory. This downloads the neede .box (virtual machine) image and creates the needed clones with specified modifications.
+<div class="codehilite"><pre><span></span>vagrant up
+</pre></div></p>
+<p>Once the virtual machines are provisioned and started you can access them via the { vagrant ssh } command. Replace pgdb1 with the other machines to access them as well, note you must be in the root directory of the project. 
+<div class="codehilite"><pre><span></span>vagrant ssh pgdb1
+</pre></div></p>
+<h2 id="ha-cluster-installation">HA Cluster Installation<a class="headerlink" href="#ha-cluster-installation" title="Permanent link">&para;</a></h2>
+<p>The required are available and included in the base/updates repositories for Centos 6.x.</p>
+<p>From my readings and research it is also possible to use heartbeat 3.x with Pacemaker to achieve similar results.  I've decided to go with Corosync as its backed by Red Hat and Suse and it looks to have more active development.  Not to mention that the Pacemaker projects recommends you should use Corosync.</p>
+<h2 id="cluster-installation">Cluster Installation<a class="headerlink" href="#cluster-installation" title="Permanent link">&para;</a></h2>
+<p>Warning! As of RedHat/CentOS 6.4 crmsh is no longer included in the default repositories.  If you want to use CRM vs PCS You can include the OpenSuse repositories <a href="http://download.opensuse.org/repositories/network:/ha-clustering:/Stable/RedHat_RHEL-6/">HERE</a>. More information on the crmsh can be found <a href="https://savannah.nongnu.org/forum/forum.php?forum_id=7503">HERE</a></p>
+<p>In this tutorial we will add the openSUSE repository to our nodes.  Though I recommend building or copying these packages into a local repository for more controlled management.</p>
+<p>Configure the openSUSE repository. This need to be done on ALL nodes in the cluster.</p>
+<div class="codehilite"><pre><span></span>sudo wget -4 http://download.opensuse.org/repositories/network:/ha-clustering:/Stable/RedHat_RHEL-6/network:ha-clustering:Stable.repo -O /etc/yum.repos.d/network_ha-clustering_Stable.repo
+</pre></div>
+
+<p>Limit the packages to be installed from the openSUSE repository. We only want the crm shell package and required dependencies. This need to be done on ALL nodes in the cluster.</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l root -c &#39;echo &quot;includepkgs=crmsh pssh python-pssh&quot; &gt;&gt; /etc/yum.repos.d/network_ha-clustering_Stable.repo&#39;
+</pre></div>
+
+<p>Now that we have the required repositories configured we need to install the needed packages. This need to be done on ALL nodes in the cluster.</p>
+<p><strong>You will see multiple dependencies being pulled in</strong></p>
+<div class="codehilite"><pre><span></span>sudo yum install pacemaker pcs corosync fence-agents crmsh cman ccs
+</pre></div>
+
+<h2 id="cluster-configuration">Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permanent link">&para;</a></h2>
+<p>The first step is to configure the underlying Cman/Corosync cluster ring communication between the nodes and setup Pacemaker to use Corosync as its communication mechanism.</p>
+<p>For secure communication Corosync requires an pre-shared authkey.  This shared key must be added to all nodes in the cluster.</p>
+<p>To generate the authkey Corosync has a utility corosync-keygen. Invoke this command as the root users to generate the authkey. The key will be generated at /etc/corosync/authkey.  You only need to perform this action on <strong>one</strong> of the nodes in the cluster as we'll copy it to the other nodes</p>
+<div class="codehilite"><pre><span></span>sudo /usr/sbin/corosync-keygen
+</pre></div>
+
+<p>Hint! Grab a cup of coffee this process takes a while to complete as it pulls from the more secure /dev/random. You don’t have to press anything on the keyboard it will still generate the authkey**</p>
+<p>Once the key has been generated copy it to the other nodes in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo scp /etc/corosync/authkey root@pgdb2:/etc/corosync/
+sudo scp /etc/corosync/authkey root@pgdb3:/etc/corosync/
+</pre></div>
+
+<p>In multiple examples and documents on the web they reference using the packmaker corosync plugin by adding a /etc/corosync/service.d/pcmk configure file on each node.  This is becoming deprecated and will show in the logs if you enable or use the corosync pacemaker plugin.  There is a small but important distinction that I stumbled upon, the pacemaker plugin has never been supported on RHEL systems.  </p>
+<p>The real issue is that at some point it will no longer be supplied with the packages on RHEL systems.  Prior to 6.4 ( Though this is looking to change in 6.5 and above ), pacemaker only had a tech preview status for the plugin and using the CMAN plugin instead.</p>
+<p>Reference this <a href="http://floriancrouzat.net/2013/04/rhel-6-4-pacemaker-1-1-8-adding-cman-support-and-getting-rid-of-the-plugin/">wiki article</a></p>
+<p>Disable quorum in order to allow Cman/Corosync to complete startup in a standalone state.  </p>
+<p>This need to be done on <strong>ALL</strong> nodes in the cluster.</p>
+<div class="codehilite"><pre><span></span>sudo sed -i.sed &quot;s/.*CMAN_QUORUM_TIMEOUT=.*/CMAN_QUORUM_TIMEOUT=0/g&quot; /etc/sysconfig/cman
+</pre></div>
+
+<p>Define the cluster, where <em>pg_cluster</em> is the cluster name.  This will generate the cluster.conf configuration file.  </p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --createcluster pg_cluster
+</pre></div>
+
+<p>Create the cluster redundant ring(s).  The name used for each node in the cluster should correspond to the nodes network hostname <code>uname -n</code>.  </p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --addnode pgdb1.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addnode pgdb2.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addnode pgdb3.example.com
+</pre></div>
+
+<p>Configure the fence_pcmk agent (supplied with Pacemaker) to redirect any fencing requests from CMAN components (such as dlm_controld) to Pacemaker. Pacemaker’s fencing subsystem lets other parts of the stack know that a node has been successfully fenced, thus avoiding the need for it to be fenced again when other subsystems notice the node is gone.  </p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<p><div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --addmethod pcmk-redirect pgdb1.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addmethod pcmk-redirect pgdb2.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addmethod pcmk-redirect pgdb3.example.com
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --addfencedev pcmk agent=fence_pcmk
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --addfenceinst pcmk pgdb1.example.com pcmk-redirect port=pgdb1.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addfenceinst pcmk pgdb2.example.com pcmk-redirect port=pgdb2.example.com
+sudo ccs -f /etc/cluster/cluster.conf --addfenceinst pcmk pgdb3.example.com pcmk-redirect port=pgdb3.example.com
+</pre></div></p>
+<p>Enable secure communciation between nodes in the Corosync cluster using the corosync authkey generated above.  </p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo ccs -f /etc/cluster/cluster.conf --setcman keyfile=&quot;/etc/corosync/authkey&quot; transport=&quot;udpu&quot;
+</pre></div>
+
+<p>Before we start the cman service and copy the configuration to the other nodes in the cluster lets verify that the generated configuration values are valid.  </p>
+<p>This should be run on the same node as the pervious commands.  For simplicity we will run this on pgdb1 in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo ccs_config_validate -f /etc/cluster/cluster.conf
+</pre></div>
+
+<p>Start the Cman/Corosync cluster services</p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<p><div class="codehilite"><pre><span></span>sudo /etc/init.d/cman start
+</pre></div>
+<div class="codehilite"><pre><span></span>Starting cluster:
+   Checking if cluster has been disabled at boot...        [  OK  ]
+   Checking Network Manager...                             [  OK  ]
+   Global setup...                                         [  OK  ]
+   Loading kernel modules...                               [  OK  ]
+   Mounting configfs...                                    [  OK  ]
+   Starting cman...                                        [  OK  ]
+   Waiting for quorum...                                   [  OK  ]
+   Starting fenced...                                      [  OK  ]
+   Starting dlm_controld...                                [  OK  ]
+   Tuning DLM kernel config...                             [  OK  ]
+   Starting gfs_controld...                                [  OK  ]
+   Unfencing self...                                       [  OK  ]
+   Joining fence domain...                                 [  OK  ]
+</pre></div></p>
+<p>Note that starting Cman also starts the Corosync service.  This can be easily verified via the Corosync init script</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/corosync status
+corosync (pid  18376) is running...
+</pre></div>
+
+<p>Start the Pacemaker cluster service</p>
+<p>This only needs to be run on <strong>one</strong> node, we'll copy it to the other nodes.  For simplicity we will run this on pgdb1 in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/pacemaker start
+Starting Pacemaker Cluster Manager                         [  OK  ]
+</pre></div>
+
+<p>Before continuing verify that all services have correctly started and are running.</p>
+<p><div class="codehilite"><pre><span></span>sudo /etc/init.d/cman status
+cluster is running.
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/corosync status
+corosync (pid  615) is running...
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/pacemaker status
+pacemakerd (pid  868) is running...
+</pre></div></p>
+<p>After the initial node has been successfully configured and services have started copy the cluster.conf to the other nodes in the cluster </p>
+<div class="codehilite"><pre><span></span>sudo scp /etc/cluster/cluster.conf pgdb2.example.com:/etc/cluster/cluster.conf
+sudo scp /etc/cluster/cluster.conf pgdb3.example.com:/etc/cluster/cluster.conf
+</pre></div>
+
+<p>Start the Cman/Corosync services on additional nodes in the cluster.</p>
+<p><div class="codehilite"><pre><span></span>sudo /etc/init.d/cman start
+</pre></div>
+<div class="codehilite"><pre><span></span>Starting cluster:
+   Checking if cluster has been disabled at boot...        [  OK  ]
+   Checking Network Manager...                             [  OK  ]
+   Global setup...                                         [  OK  ]
+   Loading kernel modules...                               [  OK  ]
+   Mounting configfs...                                    [  OK  ]
+   Starting cman...                                        [  OK  ]
+   Waiting for quorum...                                   [  OK  ]
+   Starting fenced...                                      [  OK  ]
+   Starting dlm_controld...                                [  OK  ]
+   Tuning DLM kernel config...                             [  OK  ]
+   Starting gfs_controld...                                [  OK  ]
+   Unfencing self...                                       [  OK  ]
+   Joining fence domain...                                 [  OK  ]
+</pre></div></p>
+<p>Before continuing and starting Pacemaker on additional nodes in the cluster verify that <strong>ALL</strong> nodes in the cluster are communicating via the Cman/Corosync cluster ring.</p>
+<p>View cluster ring Cman/Corosync status, this should be run on <strong>ALL</strong> nodes to verify that are correctly communicating</p>
+<p><div class="codehilite"><pre><span></span>sudo cman_tool nodes -a
+</pre></div>
+<div class="codehilite"><pre><span></span>Node  Sts   Inc   Joined               Name
+   1   M      4   2014-04-09 08:30:22  pgdb1.example.com
+       Addresses: 10.4.10.60
+   2   M      8   2014-04-09 08:44:01  pgdb2.example.com
+       Addresses: 10.4.10.61
+   3   M     12   2014-04-09 08:44:08  pgdb3.example.com
+       Addresses: 10.4.10.62
+</pre></div></p>
+<p>Start the Pacemaker service on additional nodes in the cluster</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/pacemaker start
+Starting Pacemaker Cluster Manager                         [  OK  ]
+</pre></div>
+
+<p>Before continuing verify that all services have correctly started and are running on the additional nodes in the cluster.</p>
+<p><div class="codehilite"><pre><span></span>sudo /etc/init.d/cman status
+cluster is running.
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/corosync status
+corosync (pid  615) is running...
+</pre></div>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/pacemaker status
+pacemakerd (pid  868) is running...
+</pre></div></p>
+<p>Verify that <strong>ALL</strong> nodes have joined the Pacemaker cluster. </p>
+<p>View Pacemaker HA cluster status</p>
+<p><div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster name: pg_cluster
+Last updated: Thu Apr 10 07:39:08 2014
+Last change: Thu Apr 10 06:49:19 2014 via cibadmin on pgdb1.example.com
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.10-14.el6_5.2-368c726
+3 Nodes configured
+0 Resources configured
+
+
+Online: [ pgdb1.example.com pgdb2.example.com pgdb3.example.com ]
+
+Full list of resources:
+</pre></div></p>
+<h2 id="pacemaker-cluster-configuration">Pacemaker Cluster Configuration<a class="headerlink" href="#pacemaker-cluster-configuration" title="Permanent link">&para;</a></h2>
+<p>At this point we have configured the basic cluster communication ring.  All nodes are now communicating and reporting their heartbeat status to each of the nodes via Corosync.</p>
+<p>Verify the Pacemaker cluster configuration.  Here you'll notice the cluster is complaining that STONITH (Shoot The Other Node In The Head) is not configured.  </p>
+<p><div class="codehilite"><pre><span></span>sudo pcs cluster verify -V
+</pre></div>
+<div class="codehilite"><pre><span></span>   error: unpack_resources:     Resource start-up disabled since no STONITH resources have been defined
+   error: unpack_resources:     Either configure some or disable STONITH with the stonith-enabled option
+   error: unpack_resources:     NOTE: Clusters with shared data need STONITH to ensure data integrity
+Errors found during check: config not valid
+</pre></div></p>
+<p>For now we are going to disable this and come back to it later in the tutorial.  This only needs to be run on one node of the cluster as they are syncing configurations between the nodes.</p>
+<div class="codehilite"><pre><span></span>sudo pcs property <span class="nb">set</span> stonith-enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+
+<p>Verify the Pacemaker stonith property was correctly configured.</p>
+<p><div class="codehilite"><pre><span></span>sudo pcs config
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster Name: pg_cluster
+Corosync Nodes:
+
+Pacemaker Nodes:
+ pgdb1.example.com pgdb2.example.com pgdb3.example.com
+
+Resources:
+
+Stonith Devices:
+Fencing Levels:
+
+Location Constraints:
+Ordering Constraints:
+Colocation Constraints:
+
+Cluster Properties:
+ cluster-infrastructure: cman
+ dc-version: <span class="m">1</span>.1.10-14.el6_5.2-368c726
+ stonith-enabled: <span class="nb">false</span>
+<span class="sb">````</span>
+
+Now verifying the Pacemaker cluster configuration again returns no errors.
+
+<span class="sb">````</span>
+sudo pcs cluster verify -V
+<span class="sb">````</span>
+
+Pacemaker IP Resources
+----------------------
+
+With a basic cluster configuration setup resources can be created <span class="k">for</span> the cluster to manage.  The first resource to add is a cluster IP or <span class="s2">&quot;VIP&quot;</span> so that applications will be able to continuously communicate with the cluster regardless of where the cluster services are running.
+
+Resources only need to be created on **one** node in the cluster Pacemaker/Corosync will replicate the cluster information base <span class="o">(</span>CIB<span class="o">)</span> to all nodes in the cluster
+
+Create a IP resources <span class="s2">&quot;VIPs&quot;</span> using the **ocf:heartbeat:IPaddr2** resource agent <span class="s1">&#39;script&#39;</span>.
+
+Create Replication <span class="s2">&quot;VIP&quot;</span>: This will be used <span class="k">for</span> additional PostgreSQL replicas to recieve updates from the Master
+
+<span class="sb">````</span>bash
+sudo pcs resource create pgdbrepvip ocf:heartbeat:IPaddr2 <span class="nv">ip</span><span class="o">=</span><span class="m">10</span>.10.10.104 <span class="nv">cidr_netmask</span><span class="o">=</span><span class="m">24</span> <span class="nv">iflabel</span><span class="o">=</span><span class="s2">&quot;pgdbrepvip&quot;</span> op monitor <span class="nv">interval</span><span class="o">=</span>1s meta target-role<span class="o">=</span><span class="s2">&quot;Started&quot;</span>
+<span class="sb">````</span>
+
+Create Client Access <span class="s2">&quot;VIP&quot;</span>: This will be used <span class="k">for</span> client applications to connect to the acitve Master database
+
+<span class="sb">````</span>bash
+sudo pcs resource create pgdbclivip ocf:heartbeat:IPaddr2 <span class="nv">ip</span><span class="o">=</span><span class="m">10</span>.10.10.105 <span class="nv">cidr_netmask</span><span class="o">=</span><span class="m">24</span> <span class="nv">iflabel</span><span class="o">=</span><span class="s2">&quot;pgdbclivip&quot;</span> op monitor <span class="nv">interval</span><span class="o">=</span>1s meta target-role<span class="o">=</span><span class="s2">&quot;Started&quot;</span>
+<span class="sb">````</span>
+
+Verify the Pacemaker cluster resource has been correctly added to the cluster information base <span class="o">(</span>CIB<span class="o">)</span>.
+
+<span class="sb">````</span>bash
+sudo pcs config
+<span class="sb">````</span>
+<span class="sb">````</span>
+Cluster Name: pg_cluster
+Corosync Nodes:
+
+Pacemaker Nodes:
+ pgdb1.example.com pgdb2.example.com pgdb3.example.com
+
+Resources:
+ Resource: pgdbrepvip <span class="o">(</span><span class="nv">class</span><span class="o">=</span>ocf <span class="nv">provider</span><span class="o">=</span>heartbeat <span class="nv">type</span><span class="o">=</span>IPaddr2<span class="o">)</span>
+  Attributes: <span class="nv">ip</span><span class="o">=</span><span class="m">10</span>.10.10.104 <span class="nv">cidr_netmask</span><span class="o">=</span><span class="m">24</span> <span class="nv">iflabel</span><span class="o">=</span>pgdbrepvip
+  Meta Attrs: target-role<span class="o">=</span>Started
+  Operations: monitor <span class="nv">interval</span><span class="o">=</span>1s <span class="o">(</span>pgdbrepvip-monitor-interval-1s<span class="o">)</span>
+ Resource: pgdbclivip <span class="o">(</span><span class="nv">class</span><span class="o">=</span>ocf <span class="nv">provider</span><span class="o">=</span>heartbeat <span class="nv">type</span><span class="o">=</span>IPaddr2<span class="o">)</span>
+  Attributes: <span class="nv">ip</span><span class="o">=</span><span class="m">10</span>.10.10.105 <span class="nv">cidr_netmask</span><span class="o">=</span><span class="m">24</span> <span class="nv">iflabel</span><span class="o">=</span>pgdbclivip
+  Meta Attrs: target-role<span class="o">=</span>Started
+  Operations: monitor <span class="nv">interval</span><span class="o">=</span>1s <span class="o">(</span>pgdbclivip-monitor-interval-1s<span class="o">)</span>
+
+Stonith Devices:
+Fencing Levels:
+
+Location Constraints:
+Ordering Constraints:
+Colocation Constraints:
+
+Cluster Properties:
+ cluster-infrastructure: cman
+ dc-version: <span class="m">1</span>.1.10-14.el6_5.2-368c726
+ stonith-enabled: <span class="nb">false</span>
+<span class="sb">````</span>
+
+View the running status of the cluster.  Here we can see that both the IP resources <span class="s2">&quot;VIPs&quot;</span> are running. 
+
+<span class="sb">````</span>
+sudo pcs status
+<span class="sb">````</span>
+<span class="sb">````</span>
+Cluster name: pg_cluster
+Last updated: Thu Apr <span class="m">10</span> <span class="m">08</span>:04:14 <span class="m">2014</span>
+Last change: Thu Apr <span class="m">10</span> <span class="m">07</span>:53:03 <span class="m">2014</span> via cibadmin on pgdb1.example.com
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.10-14.el6_5.2-368c726
+<span class="m">3</span> Nodes configured
+<span class="m">2</span> Resources configured
+
+
+Online: <span class="o">[</span> pgdb1.example.com pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Full list of resources:
+
+ pgdbrepvip       <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+ pgdbclivip       <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb2.example.com
+<span class="sb">````</span>
+
+The pgdbclivip IP resource <span class="s2">&quot;VIP&quot;</span> was started on pgdb2, <span class="k">for</span> simplicity we will move it to pgdb1.
+
+<span class="sb">````</span>
+sudo pcs resource move pgdbclivip pgdb1.example.com
+<span class="sb">````</span>
+
+Viewing the running status of the cluster again we can see both resources are now running on pgdb1
+
+<span class="sb">````</span>
+sudo pcs status
+<span class="sb">````</span>
+<span class="sb">````</span>
+Cluster name: pg_cluster
+Last updated: Thu Apr <span class="m">10</span> <span class="m">08</span>:11:48 <span class="m">2014</span>
+Last change: Thu Apr <span class="m">10</span> <span class="m">08</span>:06:56 <span class="m">2014</span> via crm_resource on pgdb1.example.com
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.10-14.el6_5.2-368c726
+<span class="m">3</span> Nodes configured
+<span class="m">2</span> Resources configured
+
+
+Online: <span class="o">[</span> pgdb1.example.com pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Full list of resources:
+
+ pgdbrepvip       <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+ pgdbclivip       <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+<span class="sb">````</span>
+
+PostgreSQL Database Configuration
+---------------------------------
+
+Before adding a Pacemaker pgsql resource to manage the PostgreSQL services, its recommended to setup the PostgreSQL cluster <span class="o">(</span>The PostgreSQL internal cluster<span class="o">)</span> with some basic streaming replication.
+
+The version of PostgreSQL that is in the provided repositories on CentOS <span class="m">6</span>.5 is <span class="m">8</span>.4.20 which does not provide the needed streaming replication.  To work around this we will add PGDG <span class="o">(</span>PostgreSQL Global Development Group<span class="o">)</span> repository.  
+
+As of this writing we are using PostgreSQL version <span class="m">9</span>.3.5
+
+Configure the needed repository.  
+
+This need to be <span class="k">done</span> on **ALL** nodes in the cluster.
+
+<span class="sb">```</span>bash
+sudo wget http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm -O /tmp/pgdg-centos93-9.3-1.noarch.rpm
+</pre></div></p>
+<div class="codehilite"><pre><span></span>sudo rpm -Uvh /tmp/pgdg-centos93-9.3-1.noarch.rpm
+</pre></div>
+
+<p>With the correct repository configured install the recommended packages.</p>
+<div class="codehilite"><pre><span></span>sudo yum install postgresql93-server postgresql93-contrib postgresql93-devel
+</pre></div>
+
+<p>Initialize the PostgreSQL database via initdb.  We only need to perform this on the <strong>Master</strong> node as we'll be transferring the database to the remaining nodes.  I'll be referring to these nodes as PostgreSQL replicas (pgdb2, pgdb3).  </p>
+<p>We will use pgdb1 as the <strong>Master</strong> from here on out.</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/postgresql-9.3 initdb
+</pre></div>
+
+<p>Once the initialization is successful you'll see the PostgreSQL data directory populated.  On CentOS this is located in /var/lib/pgsql/{version (9.3)}/data</p>
+<div class="codehilite"><pre><span></span>sudo ls /var/lib/pgsql/9.3/data/
+</pre></div>
+
+<p>When the database was initialized via initdb it configured permissions in the pg_hba.conf.  This uses the ident scheme to determine if a user is allowed to connect to the database.</p>
+<p><strong>ident</strong>: An authentication schema that relies on the currently logged in user. If you’ve su -s to postgres and then try to login as another user, ident will fail (as it’s not the currently logged in user).</p>
+<p>This can be a sore spot if you're not aware how it was configured and will produce an error if trying to create a database with a user that is not currently logged into the system.</p>
+<blockquote>
+<p>createdb: could not connect to database postgres: FATAL:  Ident authentication failed for user "myUser"</p>
+</blockquote>
+<p>To avoid this headache modify the pg_hba.conf file to move from the ident scheme to the md5 scheme.  </p>
+<p>This needs to be modified on the <strong>Master</strong> pgdb1</p>
+<p><div class="codehilite"><pre><span></span>sudo sed -i <span class="s1">&#39;s/\ ident/\ md5/g&#39;</span> /var/lib/pgsql/9.3/data/pg_hba.conf
+</pre></div>
+<strong>Result:</strong>
+<div class="codehilite"><pre><span></span><span class="c1"># IPv4 local connections:</span>
+host    all             all             <span class="m">127</span>.0.0.1/32            md5
+<span class="c1"># IPv6 local connections:</span>
+host    all             all             ::1/128                 md5
+</pre></div></p>
+<p>Modify the pg_hba.conf to allow the repclias to connect to the <strong>Master</strong>. In this tutorial we are adding a basic connection line.  It is recommended that you tune this based on your infrastructure for proper security.  </p>
+<p>This needs to be modified on the <strong>Master</strong> pgdb1</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;cat &lt;&lt; EOF &gt;&gt; /var/lib/pgsql/9.3/data/pg_hba.conf
+
+# Allowing Replicas to connect in for streaming replication
+host    replication    replicator    all                     trust
+EOF&quot;
+</pre></div>
+
+<p>Configure the bind address the PostgreSQL will listen on.    This needs to be set to * so the PostgreSQL service will listen on any address.  PostgreSQL will scan for new addresses and automatically bind to them as they appear on the node.  This is required to allow PostgreSQL to start listening on the <strong>VIP</strong> address in the event of node failover.</p>
+<p>Modify the postgresql.conf with your favorite text editor and modify the listen_addresses parameter or add an additional parameter to the end of the configuration file. </p>
+<p>This needs to be modified on the <strong>Master</strong> pgdb1</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;echo \&quot;listen_addresses = &#39;*&#39;\&quot; &gt;&gt; /var/lib/pgsql/9.3/data/postgresql.conf&quot;
+</pre></div>
+
+<p>The PostgreSQL has the concept of archiving for its WAL logs.  Its recommended to create a separate archive directory, this will be used to store and recover archived WAL logs.  In this tutorial we will create this in the current PostgreSQL {version} directory, you can create this anywhere.</p>
+<p>This need to be done on <strong>ALL</strong> nodes in the cluster.</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &#39;mkdir /var/lib/pgsql/9.3/archive&#39;
+</pre></div>
+
+<p>Configure the ability for PostgreSQL to sync archive logs between the nodes for recovery and backup. To configure syncing of the WAL archives between each of the Postgresql nodes, we'll setup a custom script that will be called by the archive_command in the postgresql.conf.</p>
+<p>This script utilizes rsync to keep the archive directory in sync on each of the nodes with the Postgresql Master.</p>
+<p>In order to facilitate syncing between the nodes we'll be using ssh keys to allow the nodes to send updates automagically.  We will be creating the ssh key with no passphrase named pgarchivesync for the postgresql user.  This needs to be run on <strong>ALL</strong> nodes</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c <span class="s2">&quot;ssh-keygen -t rsa -f /var/lib/pgsql/.ssh/pgarchivesync -N &#39;&#39;&quot;</span>
+</pre></div>
+
+<p>In order to simplfy the setup of the authorized_key files for the postgres user we need to set a password. This needs to be done on <strong>ALL</strong> nodes</p>
+<div class="codehilite"><pre><span></span><span class="nb">echo</span> password <span class="p">|</span> sudo passwd postgres --stdin
+</pre></div>
+
+<p>With the keys generated on all of the nodes, the public key for the postgres user on each nodes needs added to the authorized_key file on each of the other nodes that we want to maintain syncing between.</p>
+<div class="codehilite"><pre><span></span><span class="nv">me</span><span class="o">=</span><span class="sb">`</span>hostname<span class="sb">`</span>
+<span class="nv">cluster_nodes</span><span class="o">=</span><span class="s2">&quot;pgdb1 pgdb2 pgdb3&quot;</span>
+<span class="nv">nodes</span><span class="o">=(</span><span class="si">${</span><span class="nv">cluster_nodes</span><span class="p">[@]//</span><span class="si">${</span><span class="nv">me</span><span class="si">}}</span><span class="o">)</span>
+<span class="nv">nodes</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">nodes</span><span class="p">[@]</span><span class="si">}</span><span class="sb">`</span>
+
+<span class="k">for</span> node in <span class="si">${</span><span class="nv">nodes</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span> sudo ssh-copy-id -i /var/lib/pgsql/.ssh/pgarchivesync.pub postgres@<span class="si">${</span><span class="nv">node</span><span class="si">}</span><span class="p">;</span> <span class="k">done</span>
+</pre></div>
+
+<p>Accept the ssh host keys from each of the other nodes in the cluster.
+<div class="codehilite"><pre><span></span><span class="nv">me</span><span class="o">=</span><span class="sb">`</span>hostname<span class="sb">`</span>
+<span class="nv">cluster_nodes</span><span class="o">=</span><span class="s2">&quot;pgdb1 pgdb2 pgdb3&quot;</span>
+<span class="nv">nodes</span><span class="o">=(</span><span class="si">${</span><span class="nv">cluster_nodes</span><span class="p">[@]//</span><span class="si">${</span><span class="nv">me</span><span class="si">}}</span><span class="o">)</span>
+<span class="nv">nodes</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">nodes</span><span class="p">[@]</span><span class="si">}</span><span class="sb">`</span>
+
+<span class="k">for</span> node in <span class="si">${</span><span class="nv">nodes</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span> sudo runuser -l postgres -c <span class="s2">&quot;ssh -o StrictHostKeyChecking=no -i /var/lib/pgsql/.ssh/pgarchivesync postgres@</span><span class="si">${</span><span class="nv">node</span><span class="si">}</span><span class="s2"> exit&quot;</span><span class="p">;</span> <span class="k">done</span>
+</pre></div></p>
+<p>To add a bit more security, which hasn't really been the practice so far in this tutorial we will lock down that can be run with using the pgarchivesync ssh key. This needs to be run on <strong>ALL</strong> nodes</p>
+<div class="codehilite"><pre><span></span>sudo sed -i <span class="s1">&#39;s/^/command=&quot;\/usr\/bin\/rsync --server -avzp --delete \/var\/lib\/pgsql\/9.3\/archive&quot;,no-pty,no-agent-forwarding,no-port-forwarding /&#39;</span> /var/lib/pgsql/.ssh/authorized_keys
+</pre></div>
+
+<p>With the script ssh key requirements taken care of, we need to populate the script on <strong>ALL</strong> of the nodes in the cluster.  This will allow the archive syncing to happen from any node that is promoted to Master.</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l root -c <span class="s1">&#39;cat &lt;&lt; EOF &gt;&gt; /usr/local/sbin/pgarchivesync.sh</span>
+<span class="s1">#!/bin/bash</span>
+
+<span class="s1">archivedir=&quot;/var/lib/pgsql/9.3/archive&quot;</span>
+<span class="s1">synckey=&quot;/var/lib/pgsql/.ssh/pgarchivesync&quot;</span>
+
+<span class="s1"># Exit code to Postgres</span>
+<span class="s1">FAILURE=0</span>
+
+<span class="s1"># Copy the file locally to the archive directory</span>
+<span class="s1">/bin/gzip &lt; \$1 &gt; \$archivedir/\$2.gz</span>
+<span class="s1">rc=\$?</span>
+<span class="s1">if [ \$rc != 0 ]; then</span>
+<span class="s1">  FAILURE=1</span>
+<span class="s1">  exit 1</span>
+<span class="s1">fi</span>
+
+<span class="s1">me=\`hostname\`</span>
+<span class="s1">cluster_nodes=&quot;pgdb1 pgdb2 pgdb3&quot;</span>
+<span class="s1">#cluster_nodes=\`sudo cman_tool nodes -F name | sed &quot;s/.example.com//g&quot;\`</span>
+<span class="s1">nodes=(\${cluster_nodes[@]//\${me}})</span>
+<span class="s1">nodes=\`echo \${nodes[@]}\`</span>
+
+<span class="s1">verifynodes=\`echo \${nodes[@]}\`</span>
+
+<span class="s1"># Sync the archive dir with the currently correct replicas</span>
+<span class="s1">for node in \${nodes}; do</span>
+<span class="s1">  /usr/bin/nc -z -w2 \${node} 22 &gt; /dev/null 2&gt;&amp;1</span>
+<span class="s1">  rc=\$?</span>
+<span class="s1">  if [ \$rc != 0 ]; then</span>
+<span class="s1">    /usr/bin/logger &quot;PGSQL Archive Sync Failure: \${node} is not accessible for archive syncing, skipping this node&quot;</span>
+<span class="s1">    if [[ \${verifynodes[*]} =~ \${node} ]]; then</span>
+<span class="s1">      FAILURE=1</span>
+<span class="s1">    fi</span>
+<span class="s1">  else</span>
+<span class="s1">    /usr/bin/rsync -avzp --delete -e &quot;ssh -i \$synckey&quot; \$archivedir/ postgres@\$node:\$archivedir</span>
+<span class="s1">    rc=\$?</span>
+<span class="s1">    if [ \$rc != 0 ]; then</span>
+<span class="s1">      /usr/bin/logger &quot;PGSQL Archive Sync Failure: \${node} RSYNC failure&quot;</span>
+<span class="s1">      if [[ \${verifynodes[*]} =~ \${node} ]]; then</span>
+<span class="s1">        FAILURE=1</span>
+<span class="s1">      fi</span>
+<span class="s1">    fi</span>
+<span class="s1">  fi</span>
+<span class="s1">done</span>
+
+<span class="s1">exit \$FAILURE</span>
+<span class="s1">EOF&#39;</span>
+</pre></div>
+
+<p>Make the command executable so that the postgres user can run the archive sync script.</p>
+<div class="codehilite"><pre><span></span>sudo chmod +x /usr/local/sbin/pgarchivesync.sh
+</pre></div>
+
+<p>Configure PostgreSQL steaming replication in the postgresql.conf file. These settings are very basic and will need to be tuned based on your infrastructure.  </p>
+<p>This needs to be modified on the <strong>Master</strong> pgdb1</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;cat &lt;&lt; EOF &gt;&gt; /var/lib/pgsql/9.3/data/postgresql.conf
+wal_level = hot_standby
+archive_mode = on
+archive_command = &#39;/usr/local/sbin/pgarchivesync.sh %p %f&#39;
+max_wal_senders = 3
+wal_keep_segments = 100
+hot_standby = on
+EOF&quot;
+</pre></div>
+
+<p>Start the PostgreSQL service on the <strong>Master</strong> and check for erros in /var/lib/pgsql/9.3/pg_log/*.</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/postgresql-9.3 start
+Starting postgresql-9.3 service:                           [  OK  ]
+</pre></div>
+
+<p>Once the PostgreSQL service is started, to assist with the replication process and some basic security, a separate replication user account should be created.</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;psql -c \&quot;CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD &#39;replaceme&#39;;\&quot;&quot;
+</pre></div>
+
+<p>With a functioning <strong>Master</strong> database up and running, the replicas (slaves) need to be initialized and configured to synchronize from the <strong>Master</strong></p>
+<p>To clone the PostgreSQL database cluster from the <strong>Master</strong> node to the replicas (pgdb2, pgdb3).  We are using a modern version of PostgreSQL that include pg_basebackup, which makes the process 1000000000 time simpler.  </p>
+<p>You can also use pg_start_backup, rsync and pg_stop_backup to perform a more manaul cloning.</p>
+<p>On the replica nodes (pgdb2, pgdb3) run the pg_basebackup command</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &#39;pg_basebackup -D /var/lib/pgsql/9.3/data -l `date +&quot;%m-%d-%y&quot;`_initial_cloning -P -h pgdb1.example.com -p 5432 -U replicator -W -X stream&#39;
+</pre></div>
+
+<p>To avoid any confusion with troubleshooting remove the log files that were transferred during the pg_basebackup process.  This needs to be done on both replicas</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l root -c &#39;rm /var/lib/pgsql/9.3/data/pg_log/*&#39;
+</pre></div>
+
+<p>In order for the replicas to connect to the <strong>Master</strong> for streaming replication a recovery.conf file must exist in the PostgreSQL data directory.</p>
+<p>Create a recovery.conf file on both replicas (pgdb2, pgdb3)</p>
+<div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;cat &lt;&lt; EOF &gt;&gt; /var/lib/pgsql/9.3/data/recovery.conf
+standby_mode = &#39;on&#39;
+primary_conninfo = &#39;host=10.10.10.104 port=5432 user=replicator application_name=`hostname`&#39;
+restore_command = &#39;gunzip &lt; /var/lib/pgsql/9.2/archive/%f.gz &gt; \&quot;%p\&quot;&#39;
+EOF&quot;
+</pre></div>
+
+<p>Start the PostgreSQL service on both of the replicas (pgdb2, pgdb3)</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/postgresql-9.3 start
+</pre></div>
+
+<p>On the <strong>Master</strong> verify and view the active replica connections and their status.  You'll notice the sync_state is async for both nodes, this is because we have not set the standby_node_names parameter on the master to let it know what nodes it should attempt to perform synchronous replication with.  You'll also notice the state is streaming, this is continually sending changes to the replicas/slaves without waiting for WAL segments to fill and then be shipped.</p>
+<p><div class="codehilite"><pre><span></span>sudo runuser -l postgres -c &quot;psql -c \&quot;SELECT application_name, client_addr, client_hostname, sync_state, state, sync_priority, replay_location FROM pg_stat_replication;\&quot;&quot;
+</pre></div>
+<div class="codehilite"><pre><span></span>    application_name    | client_addr | client_hostname | sync_state |   state   | sync_priority | replay_location
+------------------------+-------------+-----------------+------------+-----------+---------------+-----------------
+ pgdb2.example.com | 10.4.10.61  |                 | async      | streaming |             0 | 0/40000C8
+ pgdb3.example.com | 10.4.10.62  |                 | async      | streaming |             0 | 0/40000C8
+</pre></div></p>
+<h2 id="pacemaker-postgresql-resource">Pacemaker PostgreSQL Resource<a class="headerlink" href="#pacemaker-postgresql-resource" title="Permanent link">&para;</a></h2>
+<p>This will be a master/slave resource as opposed to the primitive resource that we created above for the IP resources (VIPs).  The resource-agents package that was installed above includes a pgsql resource agent that was designed to work with Postgresql 9.1+ and streaming replication</p>
+<p>Before we create the master/slave resource we need to stop the PostgreSQL service on <strong>ALL</strong> the nodes (pgdb1 pgdb2 pgdb3).  This is because the Pacemaker PostgreSQL resource will be controlling the state of the PostgreSQL service.</p>
+<div class="codehilite"><pre><span></span>sudo /etc/init.d/postgresql-9.3 stop
+</pre></div>
+
+<p>Additionally the run level for the PostgreSQL service needs set so that it does NOT start on boot.  This is to insure that the Pacemaker PostgreSQL resource has rull control of the PostgreSQL service.</p>
+<div class="codehilite"><pre><span></span>sudo /sbin/chkconfig postgresql-9.3 off
+</pre></div>
+
+<p>Lastly to avoid issues with non master nodes (pgdb2, pgdb3) becoming the master as dictated by the Pacemaker cluster, we will place the additonal nodes into standby mode.  This also helps prevent nodes slipping to a different timeline.</p>
+<div class="codehilite"><pre><span></span>sudo pcs cluster standby pgdb2.example.com; sudo pcs cluster standby pgdb3.example.com
+</pre></div>
+
+<p>Verify that pgdb2 and pgdb3 have been placed into standby mode</p>
+<p><div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster name: pg_clu
+Last updated: Tue Nov 11 11:31:33 2014
+Last change: Tue Nov 11 11:31:32 2014
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.11-97629de
+3 Nodes configured
+2 Resources configured
+
+
+Node pgdb2.example.com: standby
+Node pgdb3.example.com: standby
+Online: [ pgdb1.example.com ]
+
+Full list of resources:
+
+ pgdbrepvip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ pgdbclivip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+</pre></div></p>
+<p>To create a stateful/multi-state resource, a primitive resource must first be created and the from that primitive resource you can create a master/slave resource.  This resource only needs to be created on one node in the cluster Pacemaker/Corosync will replicate the cluster information base (CIB) to all nodes in the cluster. For simplicity create this resource on the <strong>Master</strong> pgdb1.</p>
+<p>The parameters are all setting located in the pgsql resource script, provided via the resource-agents package.  In preparation to move this to a multi-state resource multiple monitoring operations are included for each Pacemaker cluster state.  </p>
+<div class="codehilite"><pre><span></span>sudo /usr/sbin/pcs resource create postgresql ocf:heartbeat:pgsql \
+pgctl=&quot;/usr/pgsql-9.3/bin/pg_ctl&quot; \
+pgdata=&quot;/var/lib/pgsql/9.3/data&quot; \
+psql=&quot;/usr/pgsql-9.3/bin/psql&quot; \
+config=&quot;/var/lib/pgsql/9.3/data/postgresql.conf&quot; \
+stop_escalate=&quot;5&quot; \
+rep_mode=&quot;sync&quot; \
+node_list=&quot;pgdb1.example.com pgdb2.example.com pgdb3.example.com&quot; \
+restore_command=&quot;gunzip &lt; /var/lib/pgsql/9.3/archive/%f.gz &gt; \&quot;%p\&quot;&quot; \
+master_ip=&quot;10.10.10.104&quot; \
+repuser=&quot;replicator&quot; \
+restart_on_promote=&quot;true&quot; \
+tmpdir=&quot;/var/lib/pgsql/9.3/tmpdir&quot; \
+xlog_check_count=&quot;3&quot; \
+crm_attr_timeout=&quot;5&quot; \
+check_wal_receiver=&quot;true&quot; \
+op start timeout=&quot;60s&quot; interval=&quot;0s&quot; on-fail=&quot;restart&quot; \
+op monitor timeout=&quot;30&quot; interval=&quot;2s&quot; \
+op monitor timeout=&quot;30&quot; interval=&quot;1s&quot; role=&quot;Master&quot; \
+op promote timeout=&quot;60s&quot; interval=&quot;0s&quot; on-fail=&quot;restart&quot; \
+op demote timeout=&quot;60s&quot; interval=&quot;0s&quot; on-fail=&quot;stop&quot; \
+op stop timeout=&quot;60s&quot; interval=&quot;0s&quot; on-fail=&quot;block&quot; \
+op notify timeout=&quot;60s&quot; interval=&quot;0s&quot;
+</pre></div>
+
+<p>Create the multi-state resource from the primitive resource created above</p>
+<div class="codehilite"><pre><span></span>sudo /usr/sbin/pcs resource master mspostgresql postgresql \
+notify=&quot;true&quot; \
+target-role=&quot;Started&quot;
+</pre></div>
+
+<p>Verify that creation and status of the PostgreSQL cluster resources</p>
+<p>Note! You will notice the resource fail after adding it from above, this is because the primitive resource for PostgreSQL was created with an active node and rep_mode parameter requires a Master/Slave resource.
+pgsql(postgresql)[28784]: ERROR: Replication(rep_mode=async or sync) requires Master/Slave configuration. </p>
+<div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+
+<p>To clear the failures and allow the PostgreSQL service to start controlled via Pacemaker the fail count must be cleared and service re-probed </p>
+<p>The command below sets the fail counts to 0 for the resource postgresql on the node pgdb1.example.com</p>
+<div class="codehilite"><pre><span></span>sudo crm resource failcount postgresql set pgdb1.example.com 0; sudo crm_resource -P
+</pre></div>
+
+<p>Checking the cluster status you can see that pgdb1 has now started the postgresql resource as a Slave.  If you tail /var/log/messages you'll notice that the cluster is processing the pdgdb1 node and in the process of promoting it to Master.
+<div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster name: pg_cluster
+Last updated: Fri Nov 14 07:38:56 2014
+Last change: Fri Nov 14 07:38:55 2014
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.11-97629de
+3 Nodes configured
+5 Resources configured
+
+
+Node pgdb2.example.com: standby
+Node pgdb3.example.com: standby
+Online: [ pgdb1.example.com ]
+
+Full list of resources:
+
+ pgdbrepvip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ pgdbclivip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql [postgresql]
+     Slaves: [ pgdb1.example.com ]
+     Stopped: [ pgdb2.example.com pgdb3.example.com ]
+</pre></div></p>
+<p>After a brief period of time you should now see that pgdb1 has started as a Master.  This resource now starts and manages the PostgreSQL service
+<div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster name: pg_cluster
+Last updated: Tue Nov 11 13:23:16 2014
+Last change: Tue Nov 11 13:21:05 2014
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.11-97629de
+3 Nodes configured
+5 Resources configured
+
+
+Node pgdb2.example.com: standby
+Node pgdb3.example.com: standby
+Online: [ pgdb1.example.com ]
+
+Full list of resources:
+
+ pgdbrepvip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ pgdbclivip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql [postgresql]
+     Masters: [ pgdb1.example.com ]
+     Stopped: [ pgdb2.example.com pgdb3.example.com ]
+</pre></div></p>
+<p>The additional nodes now need to placed into online mode within the Pacemaker cluster.  This will start the postgresql resource and in turn start the postgresql service on each of the replica nodes.</p>
+<p>Place pgdb2 into online mode within the cluster.  Execute the following command on any node in the cluster.</p>
+<div class="codehilite"><pre><span></span>sudo pcs cluster unstandby pgdb2.example.com
+</pre></div>
+
+<p>Place pgdb3 into online mode within the cluster.  Execute the following command on any node in cluster.
+<div class="codehilite"><pre><span></span>sudo pcs cluster unstandby pgdb3.example.com
+</pre></div></p>
+<p>Checking the cluster status you now will see that both pgdb2 and pgdb3 have started the postgresql resource as Slaves.</p>
+<p><div class="codehilite"><pre><span></span>sudo pcs status
+</pre></div>
+<div class="codehilite"><pre><span></span>Cluster name: pg_cluster
+Last updated: Wed Nov 12 06:39:22 2014
+Last change: Wed Nov 12 06:30:37 2014
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.11-97629de
+3 Nodes configured
+5 Resources configured
+
+
+Online: [ pgdb1.example.com pgdb2.example.com pgdb3.example.com ]
+
+Full list of resources:
+
+ pgdbrepvip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ pgdbclivip     (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql [postgresql]
+     Masters: [ pgdb1.example.com ]
+     Slaves: [ pgdb2.example.com pgdb3.example.com ]
+</pre></div></p>
+<p>With all the nodes started in the Pacemaker cluster and running the needed resources we need to create resource constraints.</p>
+<p>The first constraint that is needed is for the colocation of the VIPs (pgdbrepvip, pgdbclivip) and the PostgreSQL service, for the node that is running as Master.  This is so that the pgdbrepvip and pgdbclivip are always started on the same node that is running the postgresql resource in Master mode.  This is so if one or more of the resources fails on the Master node resource are migrated to the new node</p>
+<div class="codehilite"><pre><span></span>sudo pcs constraint colocation set pgdbrepvip role=Started set mspostgresql role=Master set pgdbclivip role=Started setoptions score=INFINITY
+</pre></div>
+
+<p>Then we'll set the order that the cluster resources should be started or promoted in.  For this we'll be starting the pgdbrepvip resource then the postgresql resource and lastly the pgdbclivip resource.  This seems counter intuitive to start the postgresql service before starting the PG_CLI_VIP for postgresql to bind to.  This is worked around by the listen_addresses="*" parameter that we set above.  This tells postgresql to listen on all interfaces regardless if the are coming up after the postgresql service starts.  This gives us the benefit of not allowing application utilizing the VIP to access the database until it is up.</p>
+<p>Note: The version of pcs doesn't support configuring the order set as needed.  This was brought up in IRC #linux-cluster and fiest__ is working on the fix to add this ability</p>
+<p>For now we will use the crm command to properly configure the ordering constraint, more detail below is given on the crm command
+<div class="codehilite"><pre><span></span>sudo crm configure order order-pgdbrepvip-mspostgresql-pgdbclivip-mandatory inf: pgdbrepvip:start mspostgresql:promote pgdbclivip:start
+</pre></div></p>
+<p>The last constraint we'll set is resource stickiness.  The concept of resource stickiness which controls how much a cluster resource prefers to stay running where it is. You may like to think of it as the "cost" of any downtime. By default, Pacemaker assumes there is zero cost associated with moving resources and will do so to achieve "optimal" resource placement. We can specify a different stickiness for every resource, but it is often sufficient to change the default as seen below.</p>
+<p>After setting the default resources stickiness when setting a node into standby mode and then placing it back into online mode, resources will remain on the node that they migrated to</p>
+<div class="codehilite"><pre><span></span>sudo pcs property set default-resource-stickiness=100
+</pre></div>
+
+<p>Something you might have noticed is that there is a location constraint listed in the configuration that will cause issues with the execution of the other constraints.  I'm a little unsure why its created and will update this document when I have a more in-depth answer.</p>
+<p>View the current constraints
+<div class="codehilite"><pre><span></span>sudo pcs constraint list --full
+</pre></div>
+<div class="codehilite"><pre><span></span>Location Constraints:
+  Resource: pgdbclivip
+    Enabled on: pgdb1.example.com (score:INFINITY) (role: Started) (id:cli-prefer-pgdbclivip)
+Ordering Constraints:
+  Resource Sets:
+    set pgdbrepvip action=start (id:order-pgdbrepvip-mspostgresql-pgdbclivip-mandatory-0) set mspostgresql action=promote (id:order-pgdbrepvip-mspostgresql-pgdbclivip-mandatory-1) set pgdbclivip action=start (id:order-pgdbrepvip-mspostgresql-pgdbclivip-mandatory-2) setoptions score=INFINITY (id:order-pgdbrepvip-mspostgresql-pgdbclivip-mandatory)
+Colocation Constraints:
+  Resource Sets:
+    set pgdbrepvip role=Started (id:pcs_rsc_set_pgdbrepvip-1) set mspostgresql role=Master (id:pcs_rsc_set_mspostgresql-1) set pgdbclivip role=Started (id:pcs_rsc_set_pgdbclivip-1) setoptions score=INFINITY (id:pcs_rsc_colocation_pgdbrepvip_set_mspostgresql_set_pgdbclivip)
+</pre></div></p>
+<p>Remove the location constraint, take note of the constraint ID from the output above</p>
+<div class="codehilite"><pre><span></span>sudo pcs constraint remove cli-prefer-pgdbclivip
+</pre></div>
+
+<h2 id="fencing-and-stonith">Fencing and STONITH<a class="headerlink" href="#fencing-and-stonith" title="Permanent link">&para;</a></h2>
+<p>Note! This section is still a work in progress</p>
+<h2 id="additional-tools">Additional Tools<a class="headerlink" href="#additional-tools" title="Permanent link">&para;</a></h2>
+<h3 id="crm">CRM<a class="headerlink" href="#crm" title="Permanent link">&para;</a></h3>
+<p>Packages pulled down from the OpenSUSE repository at the beginning of this tutorial provide the <strong>crm</strong> command.  This is an alternative to the <strong>pcs</strong> command used to control/configure the Pacemaker cluster.</p>
+<p>Unlike the <strong>pcs</strong> command the <strong>crm</strong> command provides an live interactive shell along with tab completion to assist in cluster control/configuration.</p>
+<p><div class="codehilite"><pre><span></span>sudo crm
+</pre></div>
+<div class="codehilite"><pre><span></span>crm<span class="o">(</span>live<span class="o">)</span><span class="c1"># cluster status</span>
+Services:
+corosync         unknown
+pacemaker        unknown
+
+Printing ring status.
+Local node ID <span class="m">3</span>
+RING ID <span class="m">0</span>
+    <span class="nv">id</span>  <span class="o">=</span> <span class="m">10</span>.10.10.103
+    <span class="nv">status</span>  <span class="o">=</span> ring <span class="m">0</span> active with no faults
+crm<span class="o">(</span>live<span class="o">)</span><span class="c1"># status</span>
+Last updated: Fri Nov <span class="m">14</span> <span class="m">15</span>:48:39 <span class="m">2014</span>
+Last change: Fri Nov <span class="m">14</span> <span class="m">13</span>:07:04 <span class="m">2014</span>
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.11-97629de
+<span class="m">3</span> Nodes configured
+<span class="m">5</span> Resources configured
+
+
+Online: <span class="o">[</span> pgdb1.example.com pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+ pgdbrepvip <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:   Started pgdb1.example.com 
+ pgdbclivip <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:   Started pgdb1.example.com 
+ Master/Slave Set: mspostgresql <span class="o">[</span>postgresql<span class="o">]</span>
+     Masters: <span class="o">[</span> pgdb1.example.com <span class="o">]</span>
+     Slaves: <span class="o">[</span> pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+</pre></div></p>
+<h3 id="crm_mon">CRM_MON<a class="headerlink" href="#crm_mon" title="Permanent link">&para;</a></h3>
+<p>So far in this guide the pcs command for cluster configuration and to see a quick overview of the cluster status.  There however is tool provided with the pacemaker-cli package that provides near real-time details and 'monitoring' of the cluster.</p>
+<p>The <strong>crm_mon</strong> command is very extensive and can even provide output in a nagios/icinga format.</p>
+<p>The options that I have found move useful are:</p>
+<ul>
+<li>-A, --show-node-attributes   Display node attributes</li>
+<li>-r, --inactive       Display inactive resources</li>
+<li>-f, --failcounts     Display resource fail counts</li>
+<li>-i, --interval=value     Update frequency in seconds</li>
+</ul>
+<p>This will list </p>
+<p><div class="codehilite"><pre><span></span>sudo crm_mon -Arf -i1
+</pre></div>
+<div class="codehilite"><pre><span></span>Last updated: Fri Nov <span class="m">14</span> <span class="m">15</span>:09:16 <span class="m">2014</span>
+Last change: Fri Nov <span class="m">14</span> <span class="m">13</span>:07:04 <span class="m">2014</span>
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.11-97629de
+<span class="m">3</span> Nodes configured
+<span class="m">5</span> Resources configured
+
+
+Online: <span class="o">[</span> pgdb1.example.com pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Full list of resources:
+
+pgdbrepvip  <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:   Started pgdb1.example.com
+pgdbclivip  <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:   Started pgdb1.example.com
+ Master/Slave Set: mspostgresql <span class="o">[</span>postgresql<span class="o">]</span>
+     Masters: <span class="o">[</span> pgdb1.example.com <span class="o">]</span>
+     Slaves: <span class="o">[</span> pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Node Attributes:
+* Node pgdb1.example.com:
+    + master-postgresql                 : <span class="m">1000</span>
+    + postgresql-data-status            : LATEST    
+    + postgresql-master-baseline        : <span class="m">0000000010000090</span>
+    + postgresql-receiver-status        : ERROR
+    + postgresql-status                 : PRI
+* Node pgdb2.example.com:
+    + master-postgresql                 : <span class="m">100</span>
+    + postgresql-data-status            : STREAMING<span class="p">|</span>SYNC
+    + postgresql-receiver-status        : normal    
+    + postgresql-status                 : HS:sync   
+    + postgresql-xlog-loc               : 00000000100000F8
+* Node pgdb3.example.com:
+    + master-postgresql                 : -INFINITY 
+    + postgresql-data-status            : STREAMING<span class="p">|</span>POTENTIAL
+    + postgresql-receiver-status        : normal    
+    + postgresql-status                 : HS:potential
+
+Migration summary:
+* Node pgdb1.example.com: 
+* Node pgdb2.example.com: 
+* Node pgdb3.example.com:
+</pre></div></p>
+<h2 id="node-failover">Node Failover<a class="headerlink" href="#node-failover" title="Permanent link">&para;</a></h2>
+<p>Below is an extensive list of possible failover senarios that might be experienced within the cluster. I wont be covering each of these in detail but you should test each of these senarios in your production environment before going live to verify the cluster is correctly configured and promotion is happening as expected.</p>
+<p>For each of the exercises below open a seperate terminal window running the <strong>crm_mon</strong> command to view the failover in near real time.
+<div class="codehilite"><pre><span></span>sudo crm_mon -Arf -i1
+</pre></div></p>
+<h3 id="fail-the-asynchronous-node-pgdb3">Fail the asynchronous node (pgdb3)<a class="headerlink" href="#fail-the-asynchronous-node-pgdb3" title="Permanent link">&para;</a></h3>
+<p>Place pgdb3 into standby mode within the cluster.
+<div class="codehilite"><pre><span></span>sudo pcs cluster standby pgdb3.example.com
+</pre></div>
+You should see pgdb3 placed into standby mode and its postgresql-data-status reported as disconnected
+<div class="codehilite"><pre><span></span>Last updated: Mon Nov 17 06:12:16 2014
+Last change: Mon Nov 17 06:12:12 2014
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: 1.1.11-97629de
+3 Nodes configured
+5 Resources configured
+
+
+Node pgdb3.example.com: standby
+Online: [ pgdb1.example.com pgdb2.example.com ]
+
+Full list of resources:
+
+pgdbrepvip      (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+pgdbclivip      (ocf::heartbeat:IPaddr2):       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql [postgresql]
+     Masters: [ pgdb1.example.com ]
+     Slaves: [ pgdb2.example.com ]
+     Stopped: [ pgdb3.example.com ]
+
+Node Attributes:
+* Node pgdb1.example.com:
+    + master-postgresql                 : 1000
+    + postgresql-data-status            : LATEST
+    + postgresql-master-baseline        : 00000000100000F8
+    + postgresql-receiver-status        : ERROR
+    + postgresql-status                 : PRI
+* Node pgdb2.example.com:
+    + master-postgresql                 : 100
+    + postgresql-data-status            : STREAMING|SYNC
+    + postgresql-receiver-status        : normal
+    + postgresql-status                 : HS:sync
+* Node pgdb3.example.com:
+    + master-postgresql                 : -INFINITY
+    + postgresql-data-status            : DISCONNECT
+    + postgresql-status                 : STOP
+
+Migration summary:
+* Node pgdb1.example.com:
+* Node pgdb2.example.com:
+* Node pgdb3.example.com:
+</pre></div></p>
+<p>Now 'reset the cluster by placing pgdb3 back into online mode'
+<div class="codehilite"><pre><span></span>sudo pcs cluster unstandby pgdb3.example.com
+</pre></div></p>
+<h3 id="fail-the-synchronous-node-pgdb2">Fail the synchronous node (pgdb2)<a class="headerlink" href="#fail-the-synchronous-node-pgdb2" title="Permanent link">&para;</a></h3>
+<p>Place pgdb2 into standby mode within the cluster
+<div class="codehilite"><pre><span></span>sudo pcs cluster standby pgdb2.example.com
+</pre></div>
+You chould see pgdb2 placed into standby mode and its postgresql-data-status reported as disconnected. Notice that pgdb3 is now the synchronous node with its postgresql-data-status set to *|SYNC 
+<div class="codehilite"><pre><span></span>Last updated: Mon Nov <span class="m">17</span> <span class="m">06</span>:21:23 <span class="m">2014</span>
+Last change: Mon Nov <span class="m">17</span> <span class="m">06</span>:21:20 <span class="m">2014</span>
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.11-97629de
+<span class="m">3</span> Nodes configured
+<span class="m">5</span> Resources configured
+
+
+Node pgdb2.example.com: standby
+Online: <span class="o">[</span> pgdb1.example.com pgdb3.example.com <span class="o">]</span>
+
+Full list of resources:
+
+pgdbrepvip      <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+pgdbclivip      <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql <span class="o">[</span>postgresql<span class="o">]</span>
+     Masters: <span class="o">[</span> pgdb1.example.com <span class="o">]</span>
+     Slaves: <span class="o">[</span> pgdb3.example.com <span class="o">]</span>
+     Stopped: <span class="o">[</span> pgdb2.example.com <span class="o">]</span>
+
+Node Attributes:
+* Node pgdb1.example.com:
+    + master-postgresql                 : <span class="m">1000</span>
+    + postgresql-data-status            : LATEST
+    + postgresql-master-baseline        : 00000000100000F8
+    + postgresql-receiver-status        : ERROR
+    + postgresql-status                 : PRI
+* Node pgdb2.example.com:
+    + master-postgresql                 : -INFINITY
+    + postgresql-data-status            : DISCONNECT
+    + postgresql-status                 : STOP
+* Node pgdb3.example.com:
+    + master-postgresql                 : <span class="m">100</span>
+    + postgresql-data-status            : STREAMING<span class="p">|</span>SYNC
+    + postgresql-receiver-status        : normal
+    + postgresql-status                 : HS:sync
+
+Migration summary:
+* Node pgdb1.example.com:
+* Node pgdb2.example.com:
+* Node pgdb3.example.com:
+</pre></div>
+Now 'reset the cluster by placing pgdb3 back into online mode'
+<div class="codehilite"><pre><span></span>sudo pcs cluster unstandby pgdb2.example.com
+</pre></div>
+Notice that pgdb2 is now the asynchronous node with its postgresql-data-status set to *|POTENTIAL
+<div class="codehilite"><pre><span></span>Last updated: Mon Nov <span class="m">17</span> <span class="m">06</span>:25:23 <span class="m">2014</span>
+Last change: Mon Nov <span class="m">17</span> <span class="m">06</span>:25:22 <span class="m">2014</span>
+Stack: cman
+Current DC: pgdb1.example.com - partition with quorum
+Version: <span class="m">1</span>.1.11-97629de
+<span class="m">3</span> Nodes configured
+<span class="m">5</span> Resources configured
+
+
+Online: <span class="o">[</span> pgdb1.example.com pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Full list of resources:
+
+pgdbrepvip      <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+pgdbclivip      <span class="o">(</span>ocf::heartbeat:IPaddr2<span class="o">)</span>:       Started pgdb1.example.com
+ Master/Slave Set: mspostgresql <span class="o">[</span>postgresql<span class="o">]</span>
+     Masters: <span class="o">[</span> pgdb1.example.com <span class="o">]</span>
+     Slaves: <span class="o">[</span> pgdb2.example.com pgdb3.example.com <span class="o">]</span>
+
+Node Attributes:
+* Node pgdb1.example.com:
+    + master-postgresql                 : <span class="m">1000</span>
+    + postgresql-data-status            : LATEST
+    + postgresql-master-baseline        : 00000000100000F8
+    + postgresql-receiver-status        : ERROR
+    + postgresql-status                 : PRI
+* Node pgdb2.example.com:
+    + master-postgresql                 : -INFINITY
+    + postgresql-data-status            : STREAMING<span class="p">|</span>POTENTIAL
+    + postgresql-receiver-status        : normal
+    + postgresql-status                 : HS:potential
+* Node pgdb3.example.com:
+    + master-postgresql                 : <span class="m">100</span>
+    + postgresql-data-status            : STREAMING<span class="p">|</span>SYNC
+    + postgresql-receiver-status        : normal
+    + postgresql-status                 : HS:sync
+
+Migration summary:
+* Node pgdb1.example.com:
+* Node pgdb2.example.com:
+* Node pgdb3.example.com:
+</pre></div></p>
+<h3 id="fail-the-master-node-pgdb1">Fail the 'Master' node (pgdb1)<a class="headerlink" href="#fail-the-master-node-pgdb1" title="Permanent link">&para;</a></h3>
+<p>Place pgdb2 into standby mode within the cluster
+<div class="codehilite"><pre><span></span>sudo pcs cluster standby pgdb1.example.com
+</pre></div></p>
+<h3 id="potential-failover-scenarios">Potential Failover Scenarios<a class="headerlink" href="#potential-failover-scenarios" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Master node loses network connectivity</li>
+<li>Master nodes' postgresql service fails</li>
+<li>Master node loses system power</li>
+<li>Master nodes' pgdbrepvip pacemaker resource fails</li>
+<li>Master nodes' pgdbclivip pacemaker resource fails</li>
+<li>Sync Replica node loses network connectivity</li>
+<li>Sync Replica nodes' postgresql service fails</li>
+<li>Sync Replica node loses system power</li>
+<li>Async Replica node loses network connectivity</li>
+<li>Async Replica nodes' postgresql service fails</li>
+<li>Async Replica node loses system power</li>
+<li>Sync and Async Replica nodes lose network connectivity</li>
+<li>Sync and Async Replica nodes lose system power</li>
+<li>Sync and Async Replica nodes postgresql service fails</li>
+<li>Master and Sync Replica nodes lose network connectivity</li>
+<li>Master and Sync Replica nodes lose system power</li>
+<li>Master and Sync Replica nodes postgresql service fails</li>
+<li>Master and Async Replica nodes lose network connectivity</li>
+<li>Master and Async Replica nodes lose system power</li>
+<li>Master and Async Replica nodes postgresql service fails</li>
+<li>Master,Sync Replica and Async Replica nodes lose network connectivity</li>
+<li>Master,Sync Replica and Async Replica nodes lose system power</li>
+<li>Master,Sync Replica and Async Replica nodes postgresql service fails</li>
+</ol>
+<h2 id="production-considerations">Production Considerations<a class="headerlink" href="#production-considerations" title="Permanent link">&para;</a></h2>
+<p>This tutorial details only a basic cluster setup and is not intended to be used in a production environment.  Below are some points that you should consider within a production environment.</p>
+<h3 id="system-configuration">System Configuration<a class="headerlink" href="#system-configuration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Make sure you have a developed and well tested procedure for testing updates for then cluster components ( pacemaker pcs corosync fence-agents crmsh cman ccs )</li>
+<li>Verify that DNS is 100% complete and accurate for all cluster nodes and pacemaker IP resources</li>
+<li>Packages downloaded from the OpenSUSE repositories should be hosted and maintained in a local repository. The OpenSUSE repository doesn't seem to support rsync or reposync so I've created a script to sync down the needed packages locally.</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">DATE</span><span class="o">=</span><span class="sb">`</span>/bin/date +%Y-%m-%d<span class="sb">`</span>
+<span class="nv">OUTDIR</span><span class="o">=</span><span class="s1">&#39;/path/to/logs/dir/&#39;</span>
+<span class="nv">OUTFILE</span><span class="o">=</span><span class="nv">$OUTDIR</span>/ha-cluster-mirror-<span class="nv">$DATE</span>.txt
+<span class="o">[</span> -d <span class="nv">$OUTDIR</span> <span class="o">]</span> <span class="o">||</span> mkdir -p <span class="nv">$OUTDIR</span>
+
+<span class="nv">URL</span><span class="o">=</span><span class="s2">&quot;http://download.opensuse.org/repositories/network:/ha-clustering:/Stable/CentOS_CentOS-6/x86_64/&quot;</span>
+<span class="nv">REPOKEY</span><span class="o">=</span><span class="s2">&quot;http://download.opensuse.org/repositories/network:/ha-clustering:/Stable/CentOS_CentOS-6/repodata/repomd.xml.key&quot;</span>
+<span class="nv">DESDIR</span><span class="o">=</span><span class="s2">&quot;/repo/dir/path/ha-cluster&quot;</span>
+<span class="nv">KEYDIR</span><span class="o">=</span><span class="s2">&quot;/repo/dir/path/ha-cluster/repodata&quot;</span>
+
+<span class="nv">CRMRPMS</span><span class="o">=</span><span class="sb">`</span>wget -4qO - <span class="nv">$URL</span> <span class="p">|</span> grep -oe <span class="s2">&quot;crm.*.rpm&quot;</span> <span class="p">|</span> cut -d<span class="s1">&#39;&quot;&#39;</span> -f1<span class="sb">`</span>
+
+<span class="k">for</span> i in <span class="nv">$CRMRPMS</span><span class="p">;</span> <span class="k">do</span>
+  wget -4 -N -P <span class="nv">$DESDIR</span> <span class="nv">$URL$i</span> &gt;&gt; <span class="nv">$OUTFILE</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">done</span>
+
+<span class="nv">PSRPMS</span><span class="o">=</span><span class="sb">`</span>wget -4qO - <span class="nv">$URL</span> <span class="p">|</span> grep -oe <span class="s2">&quot;pssh.*.rpm&quot;</span> <span class="p">|</span> cut -d<span class="s1">&#39;&quot;&#39;</span> -f1<span class="sb">`</span>
+
+<span class="k">for</span> i in <span class="nv">$PSRPMS</span><span class="p">;</span> <span class="k">do</span>
+  wget -4 -N -P <span class="nv">$DESDIR</span> <span class="nv">$URL$i</span> &gt;&gt; <span class="nv">$OUTFILE</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">done</span>
+
+wget -4 -N -P <span class="nv">$KEYDIR</span> <span class="nv">$REPOKEY</span> &gt;&gt; <span class="nv">$OUTFILE</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+/usr/bin/createrepo /repo/dir/path/ha-cluster &gt;&gt; <span class="nv">$OUTFILE</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</pre></div>
+
+<h3 id="cluster-configuration_1">Cluster Configuration<a class="headerlink" href="#cluster-configuration_1" title="Permanent link">&para;</a></h3>
+<p>Configuring network based fencing, as it provides the flexibility of being able to access the machine via an alternative connection ( LOM, iDrac, Console ) and view the state of a fenced machine.</p>
+<p>Our current solution is to use the <strong>fence_ifmib</strong> script located in /usr/sbin that is provided with the fence-agents package to administratively disable ports that fenced nodes are connected to.</p>
+<h3 id="postgresql-best-practices">PostgreSQL Best Practices<a class="headerlink" href="#postgresql-best-practices" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A unique and strong password should be set for the replicator PostgreSQL account</li>
+<li>A unique and strong password should be set for the postgres NIX account </li>
+<li>The pg_hba.conf file should limit the nodes allowed to replicate from the master with the method trust via specific IPs (/32)
+<div class="codehilite"><pre><span></span><span class="c1"># pgdb2.example.com</span>
+host    replication     replicator        <span class="m">10</span>.10.10.102/32       trust
+</pre></div></li>
+<li>A more robust archive_command command should be used.  Its recommended to use a script that does error checking. Below is a example script that moves the xlogs to an </li>
+</ul>
+<p><div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">archivedir</span><span class="o">=</span><span class="s2">&quot;/var/lib/pgsql/9.3/archive&quot;</span>
+<span class="nv">synckey</span><span class="o">=</span><span class="s2">&quot;/var/lib/pgsql/.ssh/pgarchivesync&quot;</span>
+
+<span class="c1"># Exit code to Postgres</span>
+<span class="nv">FAILURE</span><span class="o">=</span><span class="m">0</span>
+
+<span class="c1"># Copy the file locally to the archive directory</span>
+/bin/gzip &lt; <span class="nv">$1</span> &gt; <span class="nv">$archivedir</span>/<span class="nv">$2</span>.gz
+<span class="nv">rc</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$rc</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nv">FAILURE</span><span class="o">=</span><span class="m">1</span>
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nv">me</span><span class="o">=</span><span class="sb">`</span>hostname -f<span class="sb">`</span>
+<span class="nv">sitea_nodes</span><span class="o">=</span><span class="s2">&quot;pgdb1.sitea.com pgdb2.sitea.com pgdb3.sitea.com&quot;</span>
+<span class="nv">siteb_nodes</span><span class="o">=</span><span class="s2">&quot;pgdb1.siteb.com pgdb2.siteb.com pgdb3.siteb.com pgdb4.siteb.com&quot;</span>
+<span class="nv">all_nodes</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">sitea_nodes</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">siteb_nodes</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1"># Remove myself from the node list, no need to sync to myself</span>
+<span class="nv">nodes</span><span class="o">=(</span><span class="si">${</span><span class="nv">all_nodes</span><span class="p">[@]//</span><span class="si">${</span><span class="nv">me</span><span class="si">}}</span><span class="o">)</span>
+<span class="nv">nodes</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">nodes</span><span class="p">[@]</span><span class="si">}</span><span class="sb">`</span>
+
+<span class="c1">#Get my domain</span>
+<span class="nv">mydomain</span><span class="o">=</span><span class="sb">`</span>/bin/dnsdomainname<span class="sb">`</span>
+
+<span class="c1"># Set a list of nodes to verify the archive logs are synced to</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">mydomain</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;siteb.com&quot;</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+  <span class="nv">all_verifynodes</span><span class="o">=</span><span class="si">${</span><span class="nv">chantilly_nodes</span><span class="si">}</span>
+  <span class="nv">verifynodes</span><span class="o">=(</span><span class="si">${</span><span class="nv">all_verifynodes</span><span class="p">[@]//</span><span class="si">${</span><span class="nv">me</span><span class="si">}}</span><span class="o">)</span>
+  <span class="nv">verifynodes</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">verifynodes</span><span class="p">[@]</span><span class="si">}</span><span class="sb">`</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">mydomain</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;sitea.com&quot;</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+  <span class="nv">all_verifynodes</span><span class="o">=</span><span class="si">${</span><span class="nv">ashburn_nodes</span><span class="si">}</span>
+  <span class="nv">verifynodes</span><span class="o">=(</span><span class="si">${</span><span class="nv">all_verifynodes</span><span class="p">[@]//</span><span class="si">${</span><span class="nv">me</span><span class="si">}}</span><span class="o">)</span>
+  <span class="nv">verifynodes</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">verifynodes</span><span class="p">[@]</span><span class="si">}</span><span class="sb">`</span>
+<span class="k">fi</span>
+
+<span class="c1"># Sync the archive dir with the currently correct replicas</span>
+<span class="k">for</span> node in <span class="si">${</span><span class="nv">nodes</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+  /usr/bin/nc -z -w2 <span class="si">${</span><span class="nv">node</span><span class="si">}</span> <span class="m">22</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+  <span class="nv">rc</span><span class="o">=</span><span class="nv">$?</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$rc</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    /usr/bin/logger <span class="s2">&quot;PGSQL Archive Sync Failure: </span><span class="si">${</span><span class="nv">node</span><span class="si">}</span><span class="s2"> is not accessible for archive syncing, skipping this node&quot;</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">verifynodes</span><span class="p">[*]</span><span class="si">}</span> <span class="o">=</span>~ <span class="si">${</span><span class="nv">node</span><span class="si">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="nv">FAILURE</span><span class="o">=</span><span class="m">1</span>
+    <span class="k">fi</span>
+  <span class="k">else</span>
+    /usr/bin/rsync -avzp --delete -e <span class="s2">&quot;ssh -i </span><span class="nv">$synckey</span><span class="s2">&quot;</span> <span class="nv">$archivedir</span>/ postgres@<span class="nv">$node</span>:<span class="nv">$archivedir</span>
+    <span class="nv">rc</span><span class="o">=</span><span class="nv">$?</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$rc</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      /usr/bin/logger <span class="s2">&quot;PGSQL Archive Sync Failure: </span><span class="si">${</span><span class="nv">node</span><span class="si">}</span><span class="s2"> RSYNC failure&quot;</span>
+      <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">verifynodes</span><span class="p">[*]</span><span class="si">}</span> <span class="o">=</span>~ <span class="si">${</span><span class="nv">node</span><span class="si">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">FAILURE</span><span class="o">=</span><span class="m">1</span>
+      <span class="k">fi</span>
+    <span class="k">fi</span>
+  <span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="nb">exit</span> <span class="nv">$FAILURE</span>
+</pre></div>
+* In place of a single command a script should be used for the restore_command attribute/parameter used in both the cluster configuration and postgresql.conf
+<div class="codehilite"><pre><span></span>EXAMPLE SCRIPT HERE
+</pre></div></p>
+<h3 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Monitor everything!</li>
+</ul>
+<p><a href="techtacoorg">gimmick:Disqus</a></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2018 - 2019 Steven Bambling
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/smbambling" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.3",url:{base:"../../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
