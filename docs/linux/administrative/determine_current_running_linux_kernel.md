@@ -34,4 +34,3 @@ Print certain system information.  With no OPTION, same as -s.
     --version  output version information and exit
 ```
 
-[gimmick:Disqus](techtacoorg)

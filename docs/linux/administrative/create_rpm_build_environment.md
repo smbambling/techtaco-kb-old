@@ -42,4 +42,3 @@ References
 http://wiki.centos.org/HowTos/SetupRpmBuildEnvironment
 
 
-[gimmick:Disqus](techtacoorg)

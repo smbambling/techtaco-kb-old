@@ -11,4 +11,3 @@ Command Example:
 dd if=/dev/cdrom of=/cdrom_image.iso
 ```
 
-[gimmick:Disqus](techtacoorg)

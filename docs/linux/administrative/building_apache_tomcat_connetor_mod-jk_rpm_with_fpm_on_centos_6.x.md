@@ -150,4 +150,3 @@ rpm -qp --filesbypkg /root/mod_jk-1.2.40.rpm
 # [Disclaimer](/disclaimer.md)
 
 
-[gimmick:Disqus](techtacoorg)

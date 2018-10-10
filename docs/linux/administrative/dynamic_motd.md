@@ -74,4 +74,3 @@ IP: 192.168.1.254
 [smbambling@R2 ~]$
 ````
 
-[gimmick:Disqus](techtacoorg)

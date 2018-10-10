@@ -12,4 +12,3 @@ Navigate to current modules directory
 cd /lib/modules/$(uname -r)
 ```
 
-[gimmick:Disqus](techtacoorg)
