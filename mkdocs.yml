@@ -6,8 +6,16 @@ site_url: 'http://kb.techtaco.org'
 nav:
   - Home: index.md
   - 'Tips & Tricks':
-      - Useful Commands: useful_commands.md
-  - Linux: linux.md
+      - Useful Commands: tips_and_tricks/useful_commands.md
+  - Linux:
+      - Administrative: linux/administrative/nav.md
+      - Apache: linux/apache/nav.md
+      - Clustering: linux/clustering/nav.md
+      - Puppet: linux/puppet/nav.md
+      - GIT: linux/git/nav.md
+      - Monitoring: linux/monitoring/nav.md
+      - PKI Certificates: linux/pki_certificates/nav.md
+      - PostgreSQL: linux/postgresql/nav.md
   - Disclaimer: disclaimer.md
 
 # Repository
