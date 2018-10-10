@@ -4,7 +4,6 @@ site_description: 'TechTaco Knowledge Base'
 site_author: 'Steven Bambling'
 site_url: 'http://kb.techtaco.org'
 nav:
-  - Home: index.md
   - Apple:
       - Administrative: apple/administrative/nav.md
   - Linux:
