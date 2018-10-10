@@ -518,7 +518,6 @@
 </ul>
 <p>However Graphite does NOT collect any data for you.  You will need to install a seperate tool taht knows how to send data to graphite.</p>
 <h2 id="graphite-architecture">Graphite Architecture<a class="headerlink" href="#graphite-architecture" title="Permanent link">&para;</a></h2>
-<p><a href="[Collection Tool] --&gt; [Carbon-Aggregator], [Collection Tool] --&gt; [Carbon-Relay], [Collection Tool] --&gt; [Carbon-Cache], [Carbon-Aggregator] --&gt; [Carbon-Cache], [Carbon-Relay] --&gt; [Carbon-Cache], [Carbon-Cache] --&gt; [Whisper]">gimmick:yuml (scale: 70)</a></p>
 <ol>
 <li><strong>graphite webapp</strong>: A Django webapp that renders graphs on-demand using Cairo</li>
 <li><strong>carbon</strong>: Twisted daemon that listens for time-series data</li>
@@ -557,7 +556,6 @@ The data sent must be in the following format: <metric path> <metric value> <met
 <p><a href="https://graphite.readthedocs.org/en/latest/overview.html">https://graphite.readthedocs.org/en/latest/overview.html</a>
 <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-tracking-statistics-with-graphite-statsd-and-collectd">https://www.digitalocean.com/community/tutorials/an-introduction-to-tracking-statistics-with-graphite-statsd-and-collectd</a>
 <a href="https://wiki.icinga.org/display/howtos/graphite">https://wiki.icinga.org/display/howtos/graphite</a></p>
-<p><a href="techtacoorg">gimmick:Disqus</a></p>
                 
                   
                 
