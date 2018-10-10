@@ -47,4 +47,11 @@ Awk
 Sed
 ---
 
+### Update multiple files with find + sed
+
+**Remove lines matching pattern(gimmick) from multiple files**
+```
+find . -name "*.md" -type f | xargs -o sed -i '' '/gimmick/d'
+```
+
 
