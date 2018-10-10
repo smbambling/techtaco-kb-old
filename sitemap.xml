@@ -6,7 +6,7 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>http://kb.techtaco.org/tips_and_tricks/useful_commands/</loc>
+     <loc>http://kb.techtaco.org/apple/administrative/nav/</loc>
      <lastmod>2018-10-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -47,6 +47,26 @@
     </url>
     <url>
      <loc>http://kb.techtaco.org/linux/postgresql/nav/</loc>
+     <lastmod>2018-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>http://kb.techtaco.org/networking/cisco/nav/</loc>
+     <lastmod>2018-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>http://kb.techtaco.org/tips_and_tricks/nav/</loc>
+     <lastmod>2018-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>http://kb.techtaco.org/windows/administrative/nav/</loc>
+     <lastmod>2018-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>http://kb.techtaco.org/windows/outlook/nav/</loc>
      <lastmod>2018-10-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
