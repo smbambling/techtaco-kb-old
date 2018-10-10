@@ -5,8 +5,8 @@ site_author: 'Steven Bambling'
 site_url: 'http://kb.techtaco.org'
 nav:
   - Home: index.md
-  - 'Tips & Tricks':
-      - Useful Commands: tips_and_tricks/useful_commands.md
+  - Apple:
+      - Administrative: apple/administrative/nav.md
   - Linux:
       - Administrative: linux/administrative/nav.md
       - Apache: linux/apache/nav.md
@@ -16,6 +16,13 @@ nav:
       - Monitoring: linux/monitoring/nav.md
       - PKI Certificates: linux/pki_certificates/nav.md
       - PostgreSQL: linux/postgresql/nav.md
+  - Networking:
+      - Cisco: networking/cisco/nav.md
+  - 'Tips & Tricks': tips_and_tricks/nav.md
+  - Windows:
+      - Administrative: windows/administrative/nav.md
+      - Outlook: windows/outlook/nav.md
+
   - Disclaimer: disclaimer.md
 
 # Repository
