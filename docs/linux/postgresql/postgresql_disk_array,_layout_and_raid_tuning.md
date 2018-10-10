@@ -62,4 +62,3 @@ All things considered splitting the data up allows for easier measurement of dat
 
 
 
-[gimmick:Disqus](techtacoorg)

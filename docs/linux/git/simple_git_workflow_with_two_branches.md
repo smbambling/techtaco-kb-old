@@ -60,4 +60,3 @@ The normal workflow for this repository should be the following
     git push --tags
     ```
 
-[gimmick:Disqus](techtacoorg)

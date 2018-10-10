@@ -14,7 +14,6 @@ However Graphite does NOT collect any data for you.  You will need to install a 
 Graphite Architecture
 ---------------------
 
-[gimmick:yuml (scale: 70)]( [Collection Tool] --> [Carbon-Aggregator], [Collection Tool] --> [Carbon-Relay], [Collection Tool] --> [Carbon-Cache], [Carbon-Aggregator] --> [Carbon-Cache], [Carbon-Relay] --> [Carbon-Cache], [Carbon-Cache] --> [Whisper] )
 
  1. **graphite webapp**: A Django webapp that renders graphs on-demand using Cairo
  1. **carbon**: Twisted daemon that listens for time-series data
@@ -81,4 +80,3 @@ https://www.digitalocean.com/community/tutorials/an-introduction-to-tracking-sta
 https://wiki.icinga.org/display/howtos/graphite
 
 
-[gimmick:Disqus](techtacoorg)

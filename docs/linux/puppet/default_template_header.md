@@ -45,4 +45,3 @@ sed -i "1s/^/<%= scope['::template_header'] -%>\n/" *
 ```
 
 
-[gimmick:Disqus](techtacoorg)

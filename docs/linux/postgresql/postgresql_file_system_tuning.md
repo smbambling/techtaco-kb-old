@@ -65,4 +65,3 @@ vm.overcommit_memory=2
 
 
 
-[gimmick:Disqus](techtacoorg)

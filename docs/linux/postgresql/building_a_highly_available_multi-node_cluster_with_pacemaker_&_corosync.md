@@ -1431,4 +1431,3 @@ EXAMPLE SCRIPT HERE
 ### Monitoring
  - Monitor everything!
 
-[gimmick:Disqus](techtacoorg)

@@ -245,4 +245,3 @@ Also, pcs deals with constraints differently. These can be manipulated by the co
             clone-max=2 clone-node-max=1 notify=true
     pcs   # pcs cluster push cib drbd_cfg
 
-[gimmick:Disqus](techtacoorg)

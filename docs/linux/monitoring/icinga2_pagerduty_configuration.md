@@ -171,4 +171,3 @@ object User "pagerduty" {
 }
 ```
 
-[gimmick:Disqus](techtacoorg)

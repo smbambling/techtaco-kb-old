@@ -66,4 +66,3 @@ References
 http://osxdaily.com/2008/01/17/how-to-spoof-your-mac-address-in-mac-os-x/
 
 
-[gimmick:Disqus](techtacoorg)

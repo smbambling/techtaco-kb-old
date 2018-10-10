@@ -230,4 +230,3 @@ Write out database with 1 new entries
 Data Base Updated
 ````
 
-[gimmick:Disqus](techtacoorg)
