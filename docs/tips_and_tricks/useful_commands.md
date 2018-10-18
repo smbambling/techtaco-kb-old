@@ -36,6 +36,21 @@ du -sk * | sort -rn | awk '{ split( "KB MB GB" , v ); s=1; while( $1>1024 ){ $1/
 sudo du -sk .[!.]* * | sort -rn | awk '{ split( "KB MB GB" , v ); s=1; while( $1>1024 ){ $1/=1024; s++ } print int($1) v[s], $2 }'
 ```
 
+**Determine Inode Usage**
+Don't expect this to run quickly...
+
+In a directory where you suspect there might be a lot of inode usage run the following
+
+```bash
+find . -type d |
+while
+  read line
+do
+  echo "$( find "$line" -maxdepth 1 | wc -l) $line"
+done |
+sort -rn | less
+```
+
 **Test GPG Passphrase**
 ````
 echo "1234" | gpg --no-use-agent -o /dev/null --local-user <keyID> -as - && echo "The correct passphrase was entered for this key"
