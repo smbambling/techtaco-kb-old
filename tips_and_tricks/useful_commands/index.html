@@ -246,27 +246,15 @@
       
 
 
-  <li class="md-nav__item">
-    <a href="../.." title="Home" class="md-nav__link">
-      Home
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
     
-    <label class="md-nav__link" for="nav-2">
+    <label class="md-nav__link" for="nav-1">
       Apple
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+      <label class="md-nav__title" for="nav-1">
         Apple
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -296,13 +284,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
-    <label class="md-nav__link" for="nav-3">
+    <label class="md-nav__link" for="nav-2">
       Linux
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
+      <label class="md-nav__title" for="nav-2">
         Linux
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -416,13 +404,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-4">
+    <label class="md-nav__link" for="nav-3">
       Networking
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-4">
+      <label class="md-nav__title" for="nav-3">
         Networking
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -464,13 +452,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
-    <label class="md-nav__link" for="nav-6">
+    <label class="md-nav__link" for="nav-5">
       Windows
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-6">
+      <label class="md-nav__title" for="nav-5">
         Windows
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -556,6 +544,19 @@
     Sed
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-multiple-files-with-find-sed" title="Update multiple files with find + sed" class="md-nav__link">
+    Update multiple files with find + sed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -603,11 +604,27 @@
 </pre></div>
 <div class="codehilite"><pre><span></span>sudo du -sk .<span class="o">[</span>!.<span class="o">]</span>* * <span class="p">|</span> sort -rn <span class="p">|</span> awk <span class="s1">&#39;{ split( &quot;KB MB GB&quot; , v ); s=1; while( $1&gt;1024 ){ $1/=1024; s++ } print int($1) v[s], $2 }&#39;</span>
 </pre></div></p>
+<p><strong>Determine Inode Usage</strong>
+Don't expect this to run quickly...</p>
+<p>In a directory where you suspect there might be a lot of inode usage run the following</p>
+<div class="codehilite"><pre><span></span>find . -type d <span class="p">|</span>
+<span class="k">while</span>
+  <span class="nb">read</span> line
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="k">$(</span> find <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> -maxdepth <span class="m">1</span> <span class="p">|</span> wc -l<span class="k">)</span><span class="s2"> </span><span class="nv">$line</span><span class="s2">&quot;</span>
+<span class="k">done</span> <span class="p">|</span>
+sort -rn <span class="p">|</span> less
+</pre></div>
+
 <p><strong>Test GPG Passphrase</strong>
 <div class="codehilite"><pre><span></span>echo &quot;1234&quot; | gpg --no-use-agent -o /dev/null --local-user &lt;keyID&gt; -as - &amp;&amp; echo &quot;The correct passphrase was entered for this key&quot;
 </pre></div></p>
 <h2 id="awk">Awk<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
 <h2 id="sed">Sed<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
+<h3 id="update-multiple-files-with-find-sed">Update multiple files with find + sed<a class="headerlink" href="#update-multiple-files-with-find-sed" title="Permanent link">&para;</a></h3>
+<p><strong>Remove lines matching pattern(gimmick) from multiple files</strong>
+<div class="codehilite"><pre><span></span>find . -name &quot;*.md&quot; -type f | xargs -o sed -i &#39;&#39; &#39;/gimmick/d&#39;
+</pre></div></p>
                 
                   
                 
