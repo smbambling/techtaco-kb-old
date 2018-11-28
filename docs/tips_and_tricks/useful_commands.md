@@ -56,6 +56,11 @@ sort -rn | less
 echo "1234" | gpg --no-use-agent -o /dev/null --local-user <keyID> -as - && echo "The correct passphrase was entered for this key"
 ````
 
+**List Linux processes using SWAP memory**
+```
+for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
+```
+
 Awk
 ---
 
@@ -69,4 +74,14 @@ Sed
 find . -name "*.md" -type f | xargs -o sed -i '' '/gimmick/d'
 ```
 
+VIM
+---
+**Delete lines that do contain a word/pattern**
+```
+:%g/price/d
+```
 
+**Delete lines that do NOT contain a word/pattern**
+```
+:%g!/price/d
+```
