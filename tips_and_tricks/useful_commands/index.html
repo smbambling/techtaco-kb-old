@@ -627,6 +627,9 @@ sort -rn <span class="p">|</span> less
 <p><strong>Test GPG Passphrase</strong>
 <div class="codehilite"><pre><span></span>echo &quot;1234&quot; | gpg --no-use-agent -o /dev/null --local-user &lt;keyID&gt; -as - &amp;&amp; echo &quot;The correct passphrase was entered for this key&quot;
 </pre></div></p>
+<p><strong>List Linux processes using SWAP memory</strong>
+<div class="codehilite"><pre><span></span>for file in /proc/*/status ; do awk &#39;/VmSwap|Name/{printf $2 &quot; &quot; $3}END{ print &quot;&quot;}&#39; $file; done | sort -k 2 -n -r | less
+</pre></div></p>
 <h2 id="awk">Awk<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
 <h2 id="sed">Sed<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
 <h3 id="update-multiple-files-with-find-sed">Update multiple files with find + sed<a class="headerlink" href="#update-multiple-files-with-find-sed" title="Permanent link">&para;</a></h3>
