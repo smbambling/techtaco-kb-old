@@ -2,7 +2,7 @@
 
 
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="no-js">
   <head>
     
@@ -38,7 +38,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.1.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.3.0">
     
     
       
@@ -46,7 +46,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.11e41852.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.572ca0f0.css">
       
         <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
       
@@ -57,7 +57,7 @@
       
     
     
-      <script src="../../assets/javascripts/modernizr.20ef595d.js"></script>
+      <script src="../../assets/javascripts/modernizr.962652e9.js"></script>
     
     
       
@@ -68,6 +68,9 @@
     
     <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
+    
+    
+      
     
     
   </head>
@@ -630,6 +633,9 @@ sort -rn <span class="p">|</span> less
 <p><strong>List Linux processes using SWAP memory</strong>
 <div class="codehilite"><pre><span></span>for file in /proc/*/status ; do awk &#39;/VmSwap|Name/{printf $2 &quot; &quot; $3}END{ print &quot;&quot;}&#39; $file; done | sort -k 2 -n -r | less
 </pre></div></p>
+<p><strong>List the free PV disk space not used by LVM</strong>
+<div class="codehilite"><pre><span></span>freepe=$(sudo pvdisplay | grep &#39;Free PE&#39; | awk &#39;{ print $3 }&#39;) &amp;&amp; pesize=$(sudo pvdisplay | grep &#39;PE Size&#39; | awk &#39;{ print int( $3 ) }&#39;) &amp;&amp; mbpe=$(expr ${freepe} \* ${pesize}) &amp;&amp; echo $(expr ${mbpe} / 1024) GB
+</pre></div></p>
 <h2 id="awk">Awk<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
 <h2 id="sed">Sed<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
 <h3 id="update-multiple-files-with-find-sed">Update multiple files with find + sed<a class="headerlink" href="#update-multiple-files-with-find-sed" title="Permanent link">&para;</a></h3>
@@ -690,12 +696,9 @@ sort -rn <span class="p">|</span> less
       
     </div>
     
-      <script src="../../assets/javascripts/application.9e1f3b71.js"></script>
+      <script src="../../assets/javascripts/application.a353778b.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
-      
-    
-    
       
     
   </body>
