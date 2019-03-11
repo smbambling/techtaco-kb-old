@@ -13,7 +13,7 @@
         <meta name="description" content="TechTaco Knowledge Base">
       
       
-        <link rel="canonical" href="http://kb.techtaco.org/linux/monitoring/graphite/">
+        <link rel="canonical" href="http://kb.techtaco.org/linux/postfix/delete_messages_from_queue/">
       
       
         <meta name="author" content="Steven Bambling">
@@ -42,7 +42,7 @@
     
     
       
-        <title>Graphite - Knowledge Base</title>
+        <title>Delete messages from Postfix queue - Knowledge Base</title>
       
     
     
@@ -108,7 +108,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#graphite" tabindex="1" class="md-skip">
+      <a href="#delete-messages-from-postfix-queue" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -133,7 +133,7 @@
               Knowledge Base
             </span>
             <span class="md-header-nav__topic">
-              Graphite
+              Delete messages from Postfix queue
             </span>
           
         </div>
@@ -358,7 +358,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../nav/" title="Monitoring" class="md-nav__link">
+    <a href="../../monitoring/nav/" title="Monitoring" class="md-nav__link">
       Monitoring
     </a>
   </li>
@@ -522,43 +522,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" title="Overview" class="md-nav__link">
-    Overview
+  <a href="#queue-element-variables" title="Queue Element Variables" class="md-nav__link">
+    Queue Element Variables
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#graphite-architecture" title="Graphite Architecture" class="md-nav__link">
-    Graphite Architecture
+  <a href="#delete-by-recipient-address" title="Delete by recipient address" class="md-nav__link">
+    Delete by recipient address
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#graphite-webapp" title="Graphite WebApp" class="md-nav__link">
-    Graphite WebApp
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#carbon" title="Carbon" class="md-nav__link">
-    Carbon
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whisper" title="Whisper" class="md-nav__link">
-    Whisper
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#protocols" title="Protocols" class="md-nav__link">
-    Protocols
+  <a href="#delete-by-sender-address" title="Delete by sender address" class="md-nav__link">
+    Delete by sender address
   </a>
   
 </li>
@@ -586,56 +565,35 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/smbambling/techtaco-kb/edit/master/docs/linux/monitoring/graphite.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/smbambling/techtaco-kb/edit/master/docs/linux/postfix/delete_messages_from_queue.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="graphite">Graphite<a class="headerlink" href="#graphite" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Graphite does two things:</p>
+                <h1 id="delete-messages-from-postfix-queue">Delete messages from Postfix queue<a class="headerlink" href="#delete-messages-from-postfix-queue" title="Permanent link">&para;</a></h1>
+<h2 id="queue-element-variables">Queue Element Variables<a class="headerlink" href="#queue-element-variables" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Store numeric time-series data</li>
-<li>Render graphs of data on demand</li>
+<li>$1 = Queue Message ID</li>
+<li>$2 = Message Size</li>
+<li>$3 = Arrival Time Day</li>
+<li>$4 = Arrival Time Month</li>
+<li>$5 = Arrival Time Date</li>
+<li>$6 = Arrival Time Time</li>
+<li>$7 = Sender Address</li>
+<li>$8 = Recipient Address</li>
 </ul>
-<p>However Graphite does NOT collect any data for you.  You will need to install a seperate tool taht knows how to send data to graphite.</p>
-<h2 id="graphite-architecture">Graphite Architecture<a class="headerlink" href="#graphite-architecture" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>graphite webapp</strong>: A Django webapp that renders graphs on-demand using Cairo</li>
-<li><strong>carbon</strong>: Twisted daemon that listens for time-series data</li>
-<li><strong>whisper</strong>: Simple database library for storing time-series data (similar in design to RRD) </li>
-</ol>
-<h2 id="graphite-webapp">Graphite WebApp<a class="headerlink" href="#graphite-webapp" title="Permanent link">&para;</a></h2>
-<p>This is where you can desing graphs that plot your data.  Allows you to save graph properties and layout in seperate dashboards for machine or application.</p>
-<h2 id="carbon">Carbon<a class="headerlink" href="#carbon" title="Permanent link">&para;</a></h2>
-<p>Carbon is a collection of one or more daemons that make up the storage backend for Graphite.  Carbon daemons are responsible for handling data that is sent over by other processes that collect and transmit statistics. </p>
-<p>There are several Carbon daemons each that handle the recieving of data in a different way.</p>
-<ul>
-<li>carbon-cache</li>
-<li>carbon-relay</li>
-<li>carbon-aggregator</li>
-</ul>
-<p><strong>Carbon-Cache</strong>: Listens for data on a port and writes that data to disk as it arrives, in an efficient way. This daemon stores data in RAM and then flushes it to disk after a predetermined period of time.</p>
-<p>Note! Carbon-Cache only handles the data receiving and flushing procedures. It does not handle the actual storage mechanisms</p>
-<p>Multiple instanaces of the Carbon-Cache daemon can be run at once as your number of inbound statistics grows.  These can be balanced by Carbon-Relay or Carbon-Aggregator</p>
-<p><strong>Carbon-Relay</strong>: Used for replication or sharding.  Either sends requrest to ALL backend daemons for redundancy or shards data across differnet Carbon-Cache instances to spread the load across multiple storage locations.</p>
-<p><strong>Carbon-Aggregator</strong>: Buffer data and then dump it to a Carbon-Cache instance for processing.</p>
-<h2 id="whisper">Whisper<a class="headerlink" href="#whisper" title="Permanent link">&para;</a></h2>
-<p>Whisper is a database library used to store information that is processed via Carbon.<br />
-Whisper allows for higher resolution (seconds per point) of recent data to degrade into lower resolutions for long-term retention of historical data.</p>
-<h2 id="protocols">Protocols<a class="headerlink" href="#protocols" title="Permanent link">&para;</a></h2>
-<p>There are three different protocols that can be used to send data to Graphite.</p>
-<p><strong>Plain Text</strong> is the most straightforward protocol supported by Carbon. 
-The data sent must be in the following format: <metric path> <metric value> <metric timestamp>. </p>
-<p>On Unix, the nc program can be used to create a socket and send data to Carbon (by default, ‘plaintext’ runs on port 2003):
-<div class="codehilite"><pre><span></span><span class="nv">PORT</span><span class="o">=</span><span class="m">2003</span>
-<span class="nv">SERVER</span><span class="o">=</span>graphite.your.org
-<span class="nb">echo</span> <span class="s2">&quot;local.random.diceroll 4 `date +%s`&quot;</span> <span class="p">|</span> nc -q0 <span class="si">${</span><span class="nv">SERVER</span><span class="si">}</span> <span class="si">${</span><span class="nv">PORT</span><span class="si">}</span>
-</pre></div></p>
-<p><strong><a href="https://docs.python.org/3/library/pickle.html">Pickle</a></strong> is more effcient then plain text and supports sending batches of metrics to Carbon. The general idea is that the pickled data forms a list of multi-level tuples</p>
-<p><strong><a href="http://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol">AMQP</a></strong> Messaging lets you handle large load os data more gracefully.   </p>
+<h2 id="delete-by-recipient-address">Delete by recipient address<a class="headerlink" href="#delete-by-recipient-address" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>mailq <span class="p">|</span> tail -n +2 <span class="p">|</span> head -n -2 <span class="p">|</span> grep -v <span class="s1">&#39;^ *(&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;BEGIN { RS = &quot;&quot; } { if ($8 == &quot;recipient@example.com&quot;) print $1 }&#39;</span>
+<span class="p">|</span> sudo postsuper -d -
+</pre></div>
+
+<h2 id="delete-by-sender-address">Delete by sender address<a class="headerlink" href="#delete-by-sender-address" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>mailq <span class="p">|</span> tail -n +2 <span class="p">|</span> head -n -2 <span class="p">|</span> grep -v <span class="s1">&#39;^ *(&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;BEGIN { RS = &quot;&quot; } { if ($7 == &quot;sender@example.com&quot;) print $1 }&#39;</span>
+<span class="p">|</span> sudo postsuper -d -
+</pre></div>
+
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><a href="https://graphite.readthedocs.org/en/latest/overview.html">https://graphite.readthedocs.org/en/latest/overview.html</a>
-<a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-tracking-statistics-with-graphite-statsd-and-collectd">https://www.digitalocean.com/community/tutorials/an-introduction-to-tracking-statistics-with-graphite-statsd-and-collectd</a>
-<a href="https://wiki.icinga.org/display/howtos/graphite">https://wiki.icinga.org/display/howtos/graphite</a></p>
+<ul>
+<li><a href="https://www.frontline.ro/en/blog/delete-messages-from-postfix-queue-by-sender-address-and-recipient-domain">https://www.frontline.ro/en/blog/delete-messages-from-postfix-queue-by-sender-address-and-recipient-domain</a></li>
+</ul>
                 
                   
                 
