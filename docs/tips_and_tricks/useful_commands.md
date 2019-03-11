@@ -61,6 +61,11 @@ echo "1234" | gpg --no-use-agent -o /dev/null --local-user <keyID> -as - && echo
 for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
 ```
 
+**List the free PV disk space not used by LVM**
+```
+freepe=$(sudo pvdisplay | grep 'Free PE' | awk '{ print $3 }') && pesize=$(sudo pvdisplay | grep 'PE Size' | awk '{ print int( $3 ) }') && mbpe=$(expr ${freepe} \* ${pesize}) && echo $(expr ${mbpe} / 1024) GB
+```
+
 Awk
 ---
 
