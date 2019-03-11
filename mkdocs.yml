@@ -14,6 +14,7 @@ nav:
       - GIT: linux/git/nav.md
       - Monitoring: linux/monitoring/nav.md
       - PKI Certificates: linux/pki_certificates/nav.md
+      - Postfix: linux/postfix/nav.md
       - PostgreSQL: linux/postgresql/nav.md
   - Networking:
       - Cisco: networking/cisco/nav.md
