@@ -41,6 +41,11 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>http://kb.techtaco.org/linux/postfix/nav/</loc>
+     <lastmod>2019-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>http://kb.techtaco.org/linux/postgresql/nav/</loc>
      <lastmod>2019-03-11</lastmod>
      <changefreq>daily</changefreq>
