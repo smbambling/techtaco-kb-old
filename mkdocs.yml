@@ -10,6 +10,7 @@ nav:
       - Administrative: linux/administrative/nav.md
       - Apache: linux/apache/nav.md
       - Clustering: linux/clustering/nav.md
+      - DNS: linux/dns/nav.md
       - Puppet: linux/puppet/nav.md
       - GIT: linux/git/nav.md
       - Monitoring: linux/monitoring/nav.md
