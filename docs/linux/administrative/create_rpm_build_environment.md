@@ -2,9 +2,9 @@
 
 Overview
 --------
-Create an RPM Build Environment for a unprivilged user account.
+Create an RPM Build Environment for a unprivileged user account.
 
-Warning! Building RPMs should **NEVER** be done as the root user.  It shoudl **ALWAYS** be done with an unprivileged user account.  Building RPMs as root could cause potential damage to your system.
+Warning! Building RPMs should **NEVER** be done as the root user.  It should **ALWAYS** be done with an unprivileged user account.  Building RPMs as root could cause potential damage to your system.
 
 Prerequisites
 -------------
@@ -14,8 +14,8 @@ Install the rpm-build package
 sudo yum install rpm-build
 ```
 
-Most SRPMs targetted to be rebuilt on CentOS also need certain rpmbuild build macros and helper scripts, which are contained in package: redhat-rpm-config. To get results as desired, you should also install it in the same fashion as noted above, substituting the new package name.
-```bash 
+Most SRPMs targeted to be rebuilt on CentOS also need certain rpmbuild build macros and helper scripts, which are contained in package: redhat-rpm-config. To get results as desired, you should also install it in the same fashion as noted above, substituting the new package name.
+```bash
 sudo yum install redhat-rpm-config
 ```
 
@@ -32,7 +32,7 @@ Create RPM build directory structure in your home directory
 mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 ```
 
-Create .rpm macros file hunder your home directory
+Create .rpm macros file under your home directory
 ```bash
 echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 ```
@@ -40,5 +40,3 @@ echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 References
 ----------
 http://wiki.centos.org/HowTos/SetupRpmBuildEnvironment
-
-
